@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SELA — Interactive Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: ‘DM Sans’, sans-serif;
+  background: #111;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  padding: 20px 0 40px;
+  text-align: center;
+}
+
+.ph-logo {
+  font-family: ‘Cormorant Garamond’, serif;
+  font-size: 2rem; font-weight: 300;
+  letter-spacing: 0.3em; color: #f5f0e8;
+}
+
+.ph-meta {
+  font-size: 0.7rem; letter-spacing: 3px;
+  text-transform: uppercase; color: #b8924a;
+  margin-top: 8px;
+}
+
+.theme-toggle {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.theme-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #888;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.theme-btn.active {
+  background: #b8924a;
+  color: #0f0e0c;
+  border-color: #b8924a;
+}
+
+/* ── PHONE FRAME ── */
+.phone-frame {
+  width: 380px;
+  height: 780px;
+  border-radius: 40px;
+  border: 4px solid #2a2a2a;
+  background: #0f0e0c;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.phone-frame::before {
+  content: '';
+  position: absolute; top: 12px; left: 50%;
+  transform: translateX(-50%);
+  width: 100px; height: 26px;
+  background: #000;
+  border-radius: 20px; z-index: 100;
+}
+
+.screen {
+  position: absolute; inset: 0;
+  overflow-y: auto; overflow-x: hidden;
+  background: #0f0e0c;
+  transition: opacity 0.3s ease;
+  display: none;
+}
+
+.screen.active { display: block; }
+
+/* Light Mode */
+body.light-mode .phone-frame { border-color: #ccc; background: #f5f0e8; }
+body.light-mode .screen { background: #f5f0e8; color: #0f0e0c; }
+body.light-mode .ph-logo { color: #111; }
+body.light-mode .theme-btn { border-color: #ddd; color: #666; }
+body.light-mode .theme-btn.active { background: #0f0e0c; color: #fff; }
+
+/* ── GLOBAL COMPONENTS ── */
+.status-bar {
+  height: 44px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 24px 8px; font-size: 0.7rem; font-weight: 500;
+  position: sticky; top: 0; background: inherit; z-index: 50;
+}
+
+.nav-bar {
+  height: 70px;
+  background: inherit;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  position: absolute; bottom: 0; left: 0; right: 0;
+  display: flex; justify-content: space-around; align-items: center;
+  padding-bottom: 10px;
+  z-index: 90;
+}
+
+.nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 0.6rem; color: #555; cursor: pointer; transition: color 0.2s;
+}
+
+.nav-item.active { color: #b8924a; }
+.nav-icon { font-size: 1.2rem; }
+
+.top-bar {
+  padding: 10px 20px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.screen-title {
+  font-family: ‘Cormorant Garamond’, serif;
+  font-size: 1.4rem; font-weight: 400;
+}
+
+.back-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; cursor: pointer;
+}
+body.light-mode .back-btn { background: rgba(0,0,0,0.05); }
+
+/* ── HOME SCREEN ── */
+.home-greet { padding: 0 24px 10px; }
+.home-sub { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: #b8924a; }
+.home-main { font-family: ‘Cormorant Garamond’, serif; font-size: 1.6rem; line-height: 1.2; margin-top: 4px; }
+
+.search-bar {
+  margin: 16px 24px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; padding: 14px 18px;
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer;
+}
+body.light-mode .search-bar { background: #fff; border-color: #ddd; }
+.search-input { border: none; background: transparent; width: 100%; color: inherit; font-size: 0.9rem; outline: none; }
+.search-input::placeholder { color: #666; }
+
+.filter-chips {
+  padding: 0 24px 20px;
+  display: flex; gap: 10px;
+  overflow-x: auto;
+}
+.filter-chips::-webkit-scrollbar { display: none; }
+.chip {
+  padding: 8px 18px; border-radius: 20px;
+  font-size: 0.75rem; white-space: nowrap;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #888; cursor: pointer; transition: all 0.2s;
+}
+body.light-mode .chip { border-color: #ddd; background: #fff; }
+.chip.active { background: #b8924a; color: #0f0e0c; border-color: #b8924a; }
+body.light-mode .chip.active { background: #0f0e0c; color: #fff; border-color: #0f0e0c; }
+
+.section-header {
+  padding: 0 24px 10px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.section-title { font-size: 0.8rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #888; }
+.section-more { font-size: 0.7rem; color: #b8924a; cursor: pointer; }
+
+.horizontal-scroll {
+  display: flex; gap: 16px;
+  padding: 0 24px 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+.horizontal-scroll::-webkit-scrollbar { display: none; }
+
+.cafe-card {
+  min-width: 200px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px; overflow: hidden;
+  cursor: pointer; scroll-snap-align: start;
+  transition: transform 0.2s;
+}
+body.light-mode .cafe-card { background: #fff; border-color: #eee; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.cafe-card:active { transform: scale(0.98); }
+
+.card-img {
+  height: 110px;
+  background: linear-gradient(135deg, #2a1f18, #4a3020);
+  position: relative;
+}
+body.light-mode .card-img { background: linear-gradient(135deg, #c4b8a0, #d4c8a8); }
+
+.card-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(0,0,0,0.6);
+  padding: 4px 10px; border-radius: 8px;
+  font-size: 0.65rem; color: #fff;
+}
+
+.card-info { padding: 12px 14px; }
+.card-name { font-family: ‘Cormorant Garamond’, serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+.card-loc { font-size: 0.7rem; color: #888; margin-bottom: 8px; }
+.card-meta { display: flex; justify-content: space-between; font-size: 0.7rem; }
+.card-meta span.available { color: #4a9e6a; font-weight: 500; }
+
+/* Near You List */
+.nearby-list {
+  padding: 0 24px 100px; /* Space for nav */
+}
+
+.list-item {
+  display: flex; gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  cursor: pointer;
+}
+body.light-mode .list-item { border-color: #eee; }
+.list-thumb {
+  width: 60px; height: 60px;
+  border-radius: 12px;
+  background: #222;
+  flex-shrink: 0;
+}
+body.light-mode .list-thumb { background: #ddd; }
+.list-info { flex: 1; }
+.list-name { font-size: 0.95rem; font-weight: 500; margin-bottom: 4px; }
+.list-desc { font-size: 0.75rem; color: #888; line-height: 1.3; }
+.list-dist { font-size: 0.7rem; color: #b8924a; margin-top: 4px; }
+
+/* ── PROFILE SCREEN ── */
+.profile-header {
+  padding: 60px 24px 30px;
+  text-align: center;
+}
+
+.avatar-lg {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg, #b8924a, #8a6830);
+  margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; color: #fff;
+}
+
+.profile-name { font-family: ‘Cormorant Garamond’, serif; font-size: 1.8rem; }
+.profile-email { font-size: 0.8rem; color: #888; margin-top: 4px; }
+
+.profile-menu {
+  padding: 20px 24px;
+}
+
+.menu-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.menu-icon { font-size: 1.2rem; width: 24px; text-align: center; }
+.menu-arrow { margin-left: auto; color: #666; }
+
+/* ── SEARCH SCREEN ── */
+.search-header {
+  position: sticky; top: 0; background: inherit; z-index: 10;
+  padding: 10px 20px;
+  display: flex; gap: 12px; align-items: center;
+}
+
+.search-results {
+  padding: 20px 24px 100px;
+}
+
+/* ── DETAIL SCREEN ── */
+.detail-hero {
+  height: 240px;
+  background: linear-gradient(135deg, #2a1f18, #4a3020);
+  position: relative;
+}
+body.light-mode .detail-hero { background: linear-gradient(135deg, #c4b8a0, #d4c8a8); }
+
+.detail-hero-btns {
+  position: absolute; top: 50px; left: 20px; right: 20px;
+  display: flex; justify-content: space-between;
+}
+
+.detail-content {
+  padding: 24px;
+  padding-bottom: 120px;
+}
+
+.rating-row {
+  display: flex; align-items: center; gap: 10px; margin: 12px 0;
+}
+.rating-stars { color: #b8924a; font-size: 0.9rem; }
+.rating-count { font-size: 0.8rem; color: #888; }
+.status-badge {
+  background: rgba(74,158,106,0.15); color: #4a9e6a;
+  padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 500;
+}
+
+.vibe-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+.tag {
+  padding: 6px 12px; border-radius: 20px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.75rem; color: #aaa;
+}
+body.light-mode .tag { background: #f0f0f0; border-color: #ddd; }
+
+.reviews-section { margin-top: 24px; }
+.review-card {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px; padding: 16px;
+  margin-top: 12px;
+}
+body.light-mode .review-card { background: #fff; border: 1px solid #eee; }
+.review-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.8rem; }
+.review-text { font-size: 0.85rem; color: #ccc; line-height: 1.4; }
+body.light-mode .review-text { color: #555; }
+
+.seat-map-title { font-size: 0.8rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #b8924a; margin-top: 24px; margin-bottom: 12px; }
+.seat-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+
+.seat {
+  aspect-ratio: 1; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s;
+}
+.seat.free { background: rgba(74,158,106,0.15); border: 1px solid rgba(74,158,106,0.3); color: #4a9e6a; }
+.seat.taken { background: rgba(200,69,10,0.15); border: 1px solid rgba(200,69,10,0.3); color: #c8450a; opacity: 0.6; cursor: not-allowed; }
+.seat.selected { background: #b8924a; border-color: #b8924a; color: #0f0e0c; }
+body.light-mode .seat.selected { color: #fff; }
+
+.time-selector-title { font-size: 0.8rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #b8924a; margin-top: 24px; margin-bottom: 12px; }
+.time-scroll {
+  display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;
+}
+.time-scroll::-webkit-scrollbar { display: none; }
+
+.time-slot {
+  padding: 10px 18px; border-radius: 10px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.85rem; cursor: pointer; flex-shrink: 0;
+  transition: all 0.2s;
+}
+.time-slot.active { background: #b8924a; color: #0f0e0c; border-color: #b8924a; }
+
+.cta-btn {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  width: 320px; background: #b8924a;
+  color: #0f0e0c; text-align: center; padding: 16px;
+  border-radius: 16px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  cursor: pointer; z-index: 100;
+  box-shadow: 0 10px 30px rgba(184,146,74,0.3);
+}
+body.light-mode .cta-btn { color: #fff; }
+
+/* ── BOOKING SCREEN ── */
+.booking-header { padding: 50px 24px 20px; display: flex; align-items: center; gap: 16px; }
+
+.step-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+.dot { width: 30px; height: 4px; border-radius: 2px; background: #333; }
+.dot.active { background: #b8924a; width: 40px; }
+.dot.done { background: #b8924a; }
+
+.booking-form { padding: 0 24px 100px; }
+
+.form-group { margin-bottom: 20px; }
+.form-label { font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; color: #b8924a; margin-bottom: 8px; display: block; }
+.form-box {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 16px;
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+}
+body.light-mode .form-box { background: #fff; border-color: #ddd; }
+
+.guest-counter {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 12px 16px;
+}
+.counter-btn { width: 32px; height: 32px; border-radius: 50%; background: #333; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; }
+.counter-num { font-size: 1.2rem; font-weight: 600; min-width: 30px; text-align: center; }
+
+.summary-box {
+  background: rgba(184,146,74,0.1); border: 1px solid rgba(184,146,74,0.2);
+  border-radius: 16px; padding: 20px; margin-top: 24px;
+}
+.sum-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color: #aaa; }
+.sum-row.total { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; color: #fff; font-weight: 600; }
+.sum-val.gold { color: #b8924a; }
+
+/* Calendar Modal */
+.modal-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.8);
+  display: none; align-items: center; justify-content: center; z-index: 200;
+}
+.modal-box {
+  background: #1a1a1a; border-radius: 20px;
+  width: 320px; padding: 24px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+body.light-mode .modal-box { background: #fff; }
+
+.cal-header { text-align: center; font-size: 1.1rem; font-weight: 500; margin-bottom: 20px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+.cal-day-name { font-size: 0.7rem; color: #888; padding: 8px; }
+.cal-day {
+  padding: 10px; border-radius: 50%; font-size: 0.8rem; cursor: pointer;
+  transition: background 0.2s;
+}
+.cal-day:hover { background: rgba(255,255,255,0.1); }
+.cal-day.disabled { color: #444; cursor: default; }
+.cal-day.selected { background: #b8924a; color: #0f0e0c; }
+body.light-mode .cal-day.selected { color: #fff; }
+
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.modal-btn {
+  flex: 1; padding: 12px; text-align: center; border-radius: 10px; cursor: pointer; font-size: 0.9rem;
+}
+.modal-btn.cancel { background: #333; color: #aaa; }
+.modal-btn.apply { background: #b8924a; color: #0f0e0c; font-weight: 600; }
+
+/* Time Modal */
+.time-list { max-height: 300px; overflow-y: auto; }
+.time-item {
+  padding: 14px; border-bottom: 1px solid #333; cursor: pointer; display: flex; justify-content: space-between;
+}
+.time-item.selected { color: #b8924a; }
+
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="ph-logo">SELA</div>
+  <div class="ph-meta">Interactive Prototype</div>
+  <div class="theme-toggle">
+    <button class="theme-btn active" onclick="setTheme('dark')">Dark</button>
+    <button class="theme-btn" onclick="setTheme('light')">Light</button>
+  </div>
+</div>
+
+<div class="phone-frame" id="phone">
+  <!-- Notch logic handled by CSS -->
+  
+  <!-- SCREEN: HOME -->
+  <div class="screen active" id="screen-home">
+    <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
+    
+    <div style="padding: 0 0 10px 24px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-size:0.7rem; letter-spacing:1px; color:#888; text-transform:uppercase;">Good Morning</div>
+        <div class="avatar" onclick="showScreen('screen-profile')" style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #b8924a, #8a6830); margin-right:24px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.7rem; cursor:pointer;">YA</div>
+    </div>
+
+    <div class="home-greet">
+      <div class="home-main">Where would you<br/>like to work today?</div>
+    </div>
+
+    <div class="search-bar" onclick="showScreen('screen-search')">
+      <svg width="16" height="16" fill="none" stroke="#b8924a" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span style="color:#666">Search café, area, vibe...</span>
+    </div>
+
+    <div class="filter-chips">
+      <div class="chip active" onclick="filterHome('all', this)">All</div>
+      <div class="chip" onclick="filterHome('coworking', this)">Coworking</div>
+      <div class="chip" onclick="filterHome('date', this)">Date Spot</div>
+      <div class="chip" onclick="filterHome('hangout', this)">Hangout</div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">Near You</div>
+      <div class="section-more" onclick="showScreen('screen-list')">See all →</div>
+    </div>
+
+    <!-- Horizontal Scroll -->
+    <div class="horizontal-scroll" id="home-horizontal-scroll">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Vertical List -->
+    <div class="section-header" style="margin-top:10px;">
+      <div class="section-title">Popular Near Campus</div>
+    </div>
+    <div class="nearby-list" id="home-nearby-list">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Nav Bar -->
+    <div class="nav-bar">
+      <div class="nav-item active" onclick="navTo('home')"><div class="nav-icon">⌂</div><span>Home</span></div>
+      <div class="nav-item" onclick="navTo('search')"><div class="nav-icon">🔍</div><span>Explore</span></div>
+      <div class="nav-item" onclick="navTo('bookings')"><div class="nav-icon">📅</div><span>Bookings</span></div>
+      <div class="nav-item" onclick="navTo('profile')"><div class="nav-icon">👤</div><span>Profile</span></div>
+    </div>
+  </div>
+
+  <!-- SCREEN: LIST (Generic for filters) -->
+  <div class="screen" id="screen-list">
+    <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
+    <div class="top-bar">
+      <div class="back-btn" onclick="showScreen('screen-home')">←</div>
+      <div class="screen-title" id="list-title">All Cafes</div>
+      <div style="width:36px"></div>
+    </div>
+    <div class="nearby-list" id="generic-list" style="padding-top:20px;"></div>
+  </div>
+
+  <!-- SCREEN: SEARCH -->
+  <div class="screen" id="screen-search">
+    <div class="status-bar" style="position:relative; top:0;"><span>9:41</span><span>⚡ 📶</span></div>
+    <div class="search-header">
+      <div class="back-btn" onclick="showScreen('screen-home')">←</div>
+      <input type="text" id="search-input" class="search-input" placeholder="Type to search..." oninput="runSearch(this.value)" style="background:rgba(255,255,255,0.1); padding:12px; border-radius:12px; width:100%;">
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+
+  <!-- SCREEN: PROFILE -->
+  <div class="screen" id="screen-profile">
+    <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
+    <div class="profile-header">
+      <div class="avatar-lg">YA</div>
+      <div class="profile-name">Yusuf Arif</div>
+      <div class="profile-email">yusuf.arif@email.com</div>
+    </div>
+    <div class="profile-menu">
+      <div class="menu-item" onclick="alert('Edit Profile clicked')">
+        <div class="menu-icon">✏️</div>
+        <div>Edit Profile</div>
+        <div class="menu-arrow">›</div>
+      </div>
+      <div class="menu-item" onclick="alert('Payment Method clicked')">
+        <div class="menu-icon">💳</div>
+        <div>Payment Methods</div>
+        <div class="menu-arrow">›</div>
+      </div>
+      <div class="menu-item" onclick="alert('History clicked')">
+        <div class="menu-icon">📜</div>
+        <div>Booking History</div>
+        <div class="menu-arrow">›</div>
+      </div>
+      <div class="menu-item" style="color:#c8450a;" onclick="showScreen('screen-home')">
+        <div class="menu-icon">🚪</div>
+        <div>Log Out</div>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="nav-item" onclick="navTo('home')"><div class="nav-icon">⌂</div><span>Home</span></div>
+      <div class="nav-item" onclick="navTo('search')"><div class="nav-icon">🔍</div><span>Explore</span></div>
+      <div class="nav-item" onclick="navTo('bookings')"><div class="nav-icon">📅</div><span>Bookings</span></div>
+      <div class="nav-item active" onclick="navTo('profile')"><div class="nav-icon">👤</div><span>Profile</span></div>
+    </div>
+  </div>
+
+  <!-- SCREEN: DETAIL -->
+  <div class="screen" id="screen-detail">
+    <div class="detail-hero">
+      <div class="detail-hero-btns">
+        <div class="back-btn" onclick="showScreen('screen-home')" style="background:rgba(0,0,0,0.5); color:#fff;">←</div>
+        <div class="back-btn" id="fav-btn" onclick="toggleFav(this)" style="background:rgba(0,0,0,0.5); color:#fff;">♡</div>
+      </div>
+    </div>
+
+    <div class="detail-content">
+      <h2 class="screen-title" id="detail-name">Cafe Name</h2>
+      
+      <div class="rating-row">
+        <span class="rating-stars" id="detail-stars">★★★★★</span>
+        <span class="rating-count" id="detail-reviews">(0 reviews)</span>
+        <span class="status-badge" id="detail-status">Open Now</span>
+      </div>
+
+      <div class="vibe-tags" id="detail-tags"></div>
+
+      <p style="font-size:0.9rem; color:#aaa; margin-bottom:16px; line-height:1.5;" id="detail-desc">
+        Description loading...
+      </p>
+
+      <a id="detail-map-link" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:8px; color:#b8924a; font-size:0.85rem; margin-bottom:24px; text-decoration:none;">
+        📍 View on Google Maps
+      </a>
+
+      <div class="reviews-section">
+        <div class="section-title">What people say</div>
+        <div id="detail-reviews-list"></div>
+      </div>
+
+      <div class="seat-map-title">Real-Time Seat Map</div>
+      <div class="seat-grid" id="detail-seats"></div>
+
+      <div class="time-selector-title">Select Time</div>
+      <div class="time-scroll" id="detail-time-slots"></div>
+    </div>
+
+    <div class="cta-btn" onclick="showScreen('screen-booking')">Reserve Seat</div>
+  </div>
+
+  <!-- SCREEN: BOOKING -->
+  <div class="screen" id="screen-booking">
+    <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
+    <div class="booking-header">
+      <div class="back-btn" onclick="showScreen('screen-detail')">←</div>
+      <div class="screen-title">Reservation</div>
+    </div>
+
+    <div class="step-dots">
+      <div class="dot done"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
+    </div>
+
+    <div class="booking-form">
+      <div class="form-group">
+        <label class="form-label">Selected Cafe</label>
+        <div class="form-box">
+          <span id="booking-cafe-name">Cafe Name</span>
+          <span style="color:#888; font-size:0.8rem" id="booking-seat-id">Seat B2</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <div class="form-box" onclick="openModal('modal-calendar')">
+          <span id="booking-date">Select Date</span>
+          <span>📅</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Time</label>
+        <div class="form-box" onclick="openModal('modal-time')">
+          <span id="booking-time">Select Time</span>
+          <span>⏱</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Guests</label>
+        <div class="guest-counter">
+          <span style="font-size:0.9rem;">Number of People</span>
+          <div style="display:flex; align-items:center; gap:16px;">
+            <div class="counter-btn" onclick="updateGuests(-1)">−</div>
+            <div class="counter-num" id="guest-count">1</div>
+            <div class="counter-btn" onclick="updateGuests(1)">+</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="sum-row">
+          <span>Reservation Fee</span>
+          <span>Rp 5.000</span>
+        </div>
+        <div class="sum-row">
+          <span>Deposit (Applied to Order)</span>
+          <span>Rp 50.000</span>
+        </div>
+        <div class="sum-row total">
+          <span>Total to Pay Now</span>
+          <span class="sum-val gold">Rp 55.000</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-btn" onclick="alert('Booking Confirmed! (Mockup)')">Confirm & Pay</div>
+  </div>
+
+  <!-- MODAL: CALENDAR -->
+  <div class="modal-overlay" id="modal-calendar">
+    <div class="modal-box">
+      <div class="cal-header" id="cal-month-year">May 2025</div>
+      <div class="cal-grid" id="cal-grid">
+        <!-- JS Generated -->
+      </div>
+      <div class="modal-actions">
+        <div class="modal-btn cancel" onclick="closeModal('modal-calendar')">Cancel</div>
+        <div class="modal-btn apply" onclick="applyDate()">Apply</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: TIME -->
+  <div class="modal-overlay" id="modal-time">
+    <div class="modal-box">
+      <div class="cal-header">Select Time</div>
+      <div class="time-list" id="time-list">
+        <!-- JS Generated -->
+      </div>
+      <div class="modal-actions">
+        <div class="modal-btn cancel" onclick="closeModal('modal-time')">Cancel</div>
+        <div class="modal-btn apply" onclick="applyTime()">Apply</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ───── DATA ─────
+  const cafes = [
+    {
+      id: 1, name: "Dingo Coffee - UII", 
+      desc: "Very close to campus entrance, great for WFC with power outlets and cozy seating.",
+      dist: "0.1 km", tags: ["Coworking", "Power Outlets", "Student"], 
+      rating: 4.6, reviews: 1240, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Dingo+Coffee+UII+Kaliurang",
+      reviewsList: ["Great place for WFH! The wifi is stable and plenty of plugs.", "A bit crowded in the afternoon, better come morning.", "Nice coffee and friendly staff."]
+    },
+    {
+      id: 2, name: "99 Coffee Roaster", 
+      desc: "Large modern space, good food, long hours (until 2 AM), parking, and padel courts.",
+      dist: "0.5 km", tags: ["Hangout", "Modern", "Late Night"], 
+      rating: 4.7, reviews: 3500, mapsUrl: "https://www.google.com/maps/search/?api=1&query=99+Coffee+Roaster+Kaliurang+Km+14+Lodadi+UII",
+      reviewsList: ["Love the vibe here. Spacious and menu is huge.", "Good place to chill with friends after class.", "Padel court is a nice bonus!"]
+    },
+    {
+      id: 3, name: "20 Kopi (Duapuluh Kopi)", 
+      desc: "Right beside UII, cozy vibe, popular with students.",
+      dist: "0.2 km", tags: ["Coworking", "Cozy", "Student"], 
+      rating: 4.5, reviews: 890, mapsUrl: "https://www.google.com/maps/search/?api=1&query=20+Kopi+Kaliurang+Km+14.5+No.11+UII",
+      reviewsList: ["Legendary spot near campus.", "Cheap and tasty coffee.", "Can get really packed during exam season."]
+    },
+    {
+      id: 4, name: "Admeliora Coffee & Eatery", 
+      desc: "24-hour spot, comfortable for late-night work/study.",
+      dist: "1.2 km", tags: ["24 Hours", "Coworking", "Night"], 
+      rating: 4.6, reviews: 1100, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Admeliora+Coffee+Jakal+Atas+UII",
+      reviewsList: ["My go-to for late night deadlines.", "Open 24 hours is a lifesaver.", "Comfortable seating."]
+    },
+    {
+      id: 5, name: "Kemari Coffee & Space", 
+      desc: "Affordable, cozy indoor/outdoor seating, student-friendly.",
+      dist: "0.8 km", tags: ["Affordable", "Outdoor", "Hangout"], 
+      rating: 4.4, reviews: 760, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Kemari+Coffee+and+Space+Jakal+UII",
+      reviewsList: ["Very affordable prices.", "Love the outdoor area.", "Nice ambient music."]
+    },
+    {
+      id: 6, name: "Eternity Coffee", 
+      desc: "24-hour option with nice views and workspace vibe.",
+      dist: "1.5 km", tags: ["24 Hours", "View", "Workspace"], 
+      rating: 4.5, reviews: 980, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Eternity+Coffee+Kaliurang+near+UII",
+      reviewsList: ["Great view at night.", "Spacious tables.", "Wifi is decent for working."]
+    },
+    {
+      id: 7, name: "Good Luck Coffee", 
+      desc: "Comfortable for longer stays and studying.",
+      dist: "0.9 km", tags: ["Coworking", "Study", "Quiet"], 
+      rating: 4.3, reviews: 540, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Good+Luck+Coffee+Jakal+UII",
+      reviewsList: ["Quiet enough for zoom meetings.", "Tables are a bit small but comfy chairs.", "Good espresso."]
+    },
+    {
+      id: 8, name: "CultureHead Signature", 
+      desc: "Aesthetic and modern, popular among UII students.",
+      dist: "1.1 km", tags: ["Aesthetic", "Modern", "Hangout"], 
+      rating: 4.7, reviews: 2100, mapsUrl: "https://www.google.com/maps/search/?api=1&query=CultureHead+Signature+Kaliurang+Km+14+UII",
+      reviewsList: ["Very instagrammable!", "Trendy spot.", "Music is a bit loud for work, but great for hanging out."]
+    },
+    {
+      id: 9, name: "Awor Coffee", 
+      desc: "Comfortable spot in the Jakal area.",
+      dist: "1.3 km", tags: ["Cozy", "Hangout"], 
+      rating: 4.4, reviews: 320, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Awor+Coffee+Kaliurang+Km+14+UII",
+      reviewsList: ["Hidden gem.", "Friendly owner.", "Nice place to chill."]
+    },
+    {
+      id: 10, name: "Bento Kopi Jakal", 
+      desc: "24-hour, scenic and modern.",
+      dist: "2.0 km", tags: ["24 Hours", "Scenic", "Modern"], 
+      rating: 4.6, reviews: 1550, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Bento+Kopi+Jakal+UII",
+      reviewsList: ["The architecture is cool.", "Open 24 hrs, perfect for students.", "Great variety of drinks."]
+    },
+    {
+      id: 11, name: "Cupable Coffee", 
+      desc: "Convenient location near campus.",
+      dist: "0.4 km", tags: ["Convenient", "Student"], 
+      rating: 4.3, reviews: 410, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Cupable+Coffee+Kaliurang+UII",
+      reviewsList: ["Quick stop for coffee.", "Right next to campus gate.", "Standard menu."]
+    },
+    {
+      id: 12, name: "The Praja Coffee & Resto", 
+      desc: "24-hour with varied menu, good for late nights.",
+      dist: "1.8 km", tags: ["24 Hours", "Restaurant", "Night"], 
+      rating: 4.5, reviews: 870, mapsUrl: "https://www.google.com/maps/search/?api=1&query=The+Praja+Coffee+Kaliurang+UII",
+      reviewsList: ["Huge menu selection.", "Good for group meetings late at night.", "Spacious."]
+    },
+    {
+      id: 13, name: "UMPAMA Coffee and Eatery", 
+      desc: "Popular nugas (study) spot close to UII.",
+      dist: "0.6 km", tags: ["Coworking", "Study", "Student"], 
+      rating: 4.6, reviews: 1300, mapsUrl: "https://www.google.com/maps/search/?api=1&query=UMPAMA+Coffee+Kaliurang+UII",
+      reviewsList: ["Best spot for nugas.", "Lots of students here.", "Wifi is fast."]
+    },
+    {
+      id: 14, name: "Little Tiam Coffee", 
+      desc: "Kopitiam-style, open late.",
+      dist: "1.0 km", tags: ["Kopitiam", "Late Night", "Cozy"], 
+      rating: 4.4, reviews: 290, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Little+Tiam+Coffee+near+UII+Kaliurang",
+      reviewsList: ["Unique style.", "Good traditional vibes.", "Coffee is strong."]
+    },
+    {
+      id: 15, name: "Koat Coffee Jakal", 
+      desc: "Spacious with outdoor views, 24-hour options.",
+      dist: "2.2 km", tags: ["24 Hours", "Spacious", "View"], 
+      rating: 4.5, reviews: 920, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Koat+Coffee+Jakal+UII",
+      reviewsList: ["Huge space.", "Outdoor area is nice.", "Good for overnight cramping."]
+    }
+  ];
+
+  let currentCafe = null;
+  let selectedDate = null;
+  let selectedTime = null;
+  let guestCount = 1;
+
+  // ───── NAVIGATION ─────
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  function navTo(target) {
+    if(target === 'home') showScreen('screen-home');
+    else if(target === 'search') showScreen('screen-search');
+    else if(target === 'bookings') alert('Bookings history coming soon!');
+    else if(target === 'profile') showScreen('screen-profile');
+  }
+
+  // ───── RENDERING ─────
+  function renderHome() {
+    // Horizontal Scroll (Top 3)
+    const hScroll = document.getElementById('home-horizontal-scroll');
+    hScroll.innerHTML = '';
+    
+    cafes.slice(0, 5).forEach(c => {
+      const seats = Math.floor(Math.random() * 20) + 1;
+      hScroll.innerHTML += `
+        <div class="cafe-card" onclick="loadDetail(${c.id})">
+          <div class="card-img"><div class="card-badge">${seats} Seats</div></div>
+          <div class="card-info">
+            <div class="card-name">${c.name}</div>
+            <div class="card-loc">📍 ${c.dist}</div>
+            <div class="card-meta">
+              <span class="available">● Available</span>
+              <span>★ ${c.rating}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    // Vertical List (Nearby)
+    const vList = document.getElementById('home-nearby-list');
+    vList.innerHTML = '';
+    cafes.forEach(c => {
+      vList.innerHTML += `
+        <div class="list-item" onclick="loadDetail(${c.id})">
+          <div class="list-thumb"></div>
+          <div class="list-info">
+            <div class="list-name">${c.name}</div>
+            <div class="list-desc">${c.desc}</div>
+            <div class="list-dist">📍 ${c.dist} · ★ ${c.rating}</div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  function filterHome(type, btn) {
+    // Update chip active state
+    document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+
+    const list = document.getElementById('generic-list');
+    document.getElementById('list-title').innerText = type === 'all' ? 'All Cafes' : type.charAt(0).toUpperCase() + type.slice(1);
+    
+    list.innerHTML = '';
+    
+    // Filter logic
+    const filtered = cafes.filter(c => {
+      if(type === 'all') return true;
+      // Simple tag matching logic
+      return c.tags.some(t => t.toLowerCase().includes(type));
+    });
+
+    if(filtered.length === 0) {
+      list.innerHTML = '<div style="text-align:center; padding:40px; color:#666;">No cafes found for this category.</div>';
+    } else {
+      filtered.forEach(c => {
+        list.innerHTML += `
+          <div class="list-item" onclick="loadDetail(${c.id})">
+            <div class="list-thumb"></div>
+            <div class="list-info">
+              <div class="list-name">${c.name}</div>
+              <div class="list-desc">${c.desc}</div>
+              <div class="list-dist">📍 ${c.dist} · ★ ${c.rating}</div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    showScreen('screen-list');
+  }
+
+  function runSearch(query) {
+    const list = document.getElementById('search-results');
+    list.innerHTML = '';
+    
+    const q = query.toLowerCase();
+    const results = cafes.filter(c => 
+      c.name.toLowerCase().includes(q) || 
+      c.desc.toLowerCase().includes(q) ||
+      c.tags.some(t => t.toLowerCase().includes(q))
+    );
+
+    if(query.length === 0) return;
+
+    results.forEach(c => {
+      list.innerHTML += `
+        <div class="list-item" onclick="loadDetail(${c.id})">
+          <div class="list-thumb"></div>
+          <div class="list-info">
+            <div class="list-name">${c.name}</div>
+            <div class="list-desc">${c.desc}</div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  // ───── DETAIL LOGIC ─────
+  function loadDetail(id) {
+    currentCafe = cafes.find(c => c.id === id);
+    if(!currentCafe) return;
+
+    document.getElementById('detail-name').innerText = currentCafe.name;
+    document.getElementById('detail-desc').innerText = currentCafe.desc;
+    document.getElementById('detail-stars').innerText = '★'.repeat(Math.round(currentCafe.rating)) + ' ' + currentCafe.rating;
+    document.getElementById('detail-reviews').innerText = `(${currentCafe.reviews} reviews)`;
+    document.getElementById('detail-map-link').href = currentCafe.mapsUrl;
+
+    // Tags
+    const tagBox = document.getElementById('detail-tags');
+    tagBox.innerHTML = '';
+    currentCafe.tags.forEach(t => tagBox.innerHTML += `<div class="tag">${t}</div>`);
+
+    // Reviews
+    const revBox = document.getElementById('detail-reviews-list');
+    revBox.innerHTML = '';
+    currentCafe.reviewsList.forEach(r => {
+      revBox.innerHTML += `
+        <div class="review-card">
+          <div class="review-header">
+            <span style="font-weight:600;">User</span>
+            <span style="color:#b8924a;">★ ${currentCafe.rating}</span>
+          </div>
+          <div class="review-text">"${r}"</div>
+        </div>
+      `;
+    });
+
+    // Seats
+    const seatBox = document.getElementById('detail-seats');
+    seatBox.innerHTML = '';
+    for(let i=0; i<12; i++) {
+      const isFree = Math.random() > 0.4;
+      const isSelected = i === 5; // Default selection
+      seatBox.innerHTML += `
+        <div class="seat ${isFree ? 'free' : 'taken'} ${isSelected ? 'selected' : ''}" onclick="selectSeat(this)">${String.fromCharCode(65 + Math.floor(i/4))}${(i%4)+1}</div>
+      `;
+    }
+
+    // Time
+    const timeBox = document.getElementById('detail-time-slots');
+    timeBox.innerHTML = '';
+    for(let h=8; h<=22; h++) {
+      const isBusy = Math.random() > 0.7;
+      timeBox.innerHTML += `<div class="time-slot ${isBusy ? 'taken' : ''}" onclick="selectTime(this)">${h}:00</div>`;
+    }
+
+    showScreen('screen-detail');
+  }
+
+  function selectSeat(el) {
+    if(el.classList.contains('taken')) return;
+    document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function selectTime(el) {
+    if(el.classList.contains('taken')) return;
+    document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function toggleFav(el) {
+    if(el.innerText === '♡') el.innerText = '♥';
+    else el.innerText = '♡';
+  }
+
+  // ───── BOOKING LOGIC ─────
+  function openModal(id) {
+    document.getElementById(id).style.display = 'flex';
+    if(id === 'modal-calendar') renderCalendar();
+    if(id === 'modal-time') renderTimeList();
+  }
+  
+  function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+
+  function loadBooking() {
+    if(!currentCafe) return;
+    document.getElementById('booking-cafe-name').innerText = currentCafe.name;
+    // Reset state
+    selectedDate = null;
+    selectedTime = null;
+    guestCount = 1;
+    document.getElementById('booking-date').innerText = "Select Date";
+    document.getElementById('booking-time').innerText = "Select Time";
+    document.getElementById('guest-count').innerText = "1";
+    
+    showScreen('screen-booking');
+  }
+
+  document.querySelector('.cta-btn').addEventListener('click', loadBooking);
+
+  function updateGuests(delta) {
+    guestCount += delta;
+    if(guestCount < 1) guestCount = 1;
+    if(guestCount > 10) guestCount = 10;
+    document.getElementById('guest-count').innerText = guestCount;
+  }
+
+  // ───── CALENDAR MODAL ─────
+  let tempDate = null;
+
+  function renderCalendar() {
+    const grid = document.getElementById('cal-grid');
+    const header = document.getElementById('cal-month-year');
+    const date = new Date(2025, 4, 1); // May 2025
+    header.innerText = "May 2025";
+    
+    grid.innerHTML = '';
+    const days = ['S','M','T','W','T','F','S'];
+    days.forEach(d => grid.innerHTML += `<div class="cal-day-name">${d}</div>`);
+
+    // May 2025 starts on Thursday (index 4)
+    for(let i=0; i<4; i++) grid.innerHTML += `<div class="cal-day disabled"></div>`;
+
+    for(let i=1; i<=31; i++) {
+      grid.innerHTML += `<div class="cal-day ${selectedDate === i ? 'selected' : ''}" onclick="pickDate(${i})">${i}</div>`;
+    }
+  }
+
+  function pickDate(d) {
+    selectedDate = d;
+    renderCalendar();
+  }
+
+  function applyDate() {
+    if(selectedDate) {
+      const d = new Date(2025, 4, selectedDate);
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('booking-date').innerText = d.toLocaleDateString('en-US', options);
+    }
+    closeModal('modal-calendar');
+  }
+
+  // ───── TIME MODAL ─────
+  let tempTime = null;
+
+  function renderTimeList() {
+    const list = document.getElementById('time-list');
+    list.innerHTML = '';
+    for(let h=8; h<=22; h++) {
+      list.innerHTML += `
+        <div class="time-item" onclick="pickTime('${h}:00')">${h}:00</div>
+      `;
+    }
+  }
+
+  function pickTime(t) {
+    selectedTime = t;
+    document.querySelectorAll('.time-item').forEach(i => i.classList.remove('selected'));
+    event.target.classList.add('selected');
+  }
+
+  function applyTime() {
+    if(selectedTime) {
+      document.getElementById('booking-time').innerText = selectedTime + " - " + (parseInt(selectedTime)+2) + ":00 (2 Hours)";
+    }
+    closeModal('modal-time');
+  }
+
+  // ───── THEME ─────
+  function setTheme(theme) {
+    document.body.classList.toggle('light-mode', theme === 'light');
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  // ───── INIT ─────
+  renderHome();
+
+</script>
+</body>
+</html>
