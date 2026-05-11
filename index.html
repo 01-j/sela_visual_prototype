@@ -90,6 +90,7 @@ body {
   background: #0f0e0c;
   transition: opacity 0.3s ease;
   display: none;
+  padding-bottom: 100px;
 }
 
 .screen.active { display: block; }
@@ -113,7 +114,7 @@ body.light-mode .theme-btn.active { background: #0f0e0c; color: #fff; }
   height: 70px;
   background: inherit;
   border-top: 1px solid rgba(255,255,255,0.05);
-  position: sticky; bottom: 0; left: 0; right: 0;
+  position: absolute; bottom: 0; left: 0; right: 0;
   display: flex; justify-content: space-around; align-items: center;
   padding-bottom: 10px;
   z-index: 90;
@@ -510,13 +511,6 @@ body.light-mode .cal-day.selected { color: #fff; }
       <!-- Populated by JS -->
     </div>
 
-    <!-- Nav Bar -->
-    <div class="nav-bar">
-      <div class="nav-item active" onclick="navTo('home')"><div class="nav-icon">⌂</div><span>Home</span></div>
-      <div class="nav-item" onclick="navTo('search')"><div class="nav-icon">🔍</div><span>Explore</span></div>
-      <div class="nav-item" onclick="navTo('bookings')"><div class="nav-icon">📅</div><span>Bookings</span></div>
-      <div class="nav-item" onclick="navTo('profile')"><div class="nav-icon">👤</div><span>Profile</span></div>
-    </div>
   </div>
 
   <!-- SCREEN: LIST (Generic for filters) -->
@@ -559,7 +553,7 @@ body.light-mode .cal-day.selected { color: #fff; }
         <div>Payment Methods</div>
         <div class="menu-arrow">›</div>
       </div>
-      <div class="menu-item" onclick="alert('History clicked')">
+      <div class="menu-item" onclick="navTo('bookings')">
         <div class="menu-icon">📜</div>
         <div>Booking History</div>
         <div class="menu-arrow">›</div>
@@ -569,12 +563,60 @@ body.light-mode .cal-day.selected { color: #fff; }
         <div>Log Out</div>
       </div>
     </div>
-    <div class="nav-bar">
-      <div class="nav-item" onclick="navTo('home')"><div class="nav-icon">⌂</div><span>Home</span></div>
-      <div class="nav-item" onclick="navTo('search')"><div class="nav-icon">🔍</div><span>Explore</span></div>
-      <div class="nav-item" onclick="navTo('bookings')"><div class="nav-icon">📅</div><span>Bookings</span></div>
-      <div class="nav-item active" onclick="navTo('profile')"><div class="nav-icon">👤</div><span>Profile</span></div>
+  </div>
+
+  <!-- SCREEN: BOOKINGS -->
+  <div class="screen" id="screen-bookings">
+    <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
+    <div class="top-bar">
+      <div class="back-btn" onclick="showScreen('screen-home')">←</div>
+      <div class="screen-title">My Bookings</div>
+      <div style="width:36px"></div>
     </div>
+    <div class="section-header">
+      <div class="section-title">Upcoming Reservations</div>
+      <div class="section-more" onclick="showScreen('screen-home')">Book New</div>
+    </div>
+    <div class="nearby-list" id="bookings-list">
+      <!-- Booking entries inserted here -->
+    </div>
+  </div>
+
+  <!-- SCREEN: BOOKING DETAIL -->
+  <div class="screen" id="screen-booking-detail">
+    <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
+    <div class="top-bar">
+      <div class="back-btn" onclick="showScreen('screen-bookings')">←</div>
+      <div class="screen-title">Booking Details</div>
+      <div style="width:36px"></div>
+    </div>
+    <div class="booking-form">
+      <div class="form-group">
+        <label class="form-label">Cafe</label>
+        <div class="form-box"><span id="detail-booking-cafe">Cafe Name</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Seat</label>
+        <div class="form-box"><span id="detail-booking-seat">A1</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <div class="form-box"><span id="detail-booking-date">Select Date</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Time</label>
+        <div class="form-box"><span id="detail-booking-time">Select Time</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Guests</label>
+        <div class="form-box"><span id="detail-booking-guests">1 guest</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <div class="form-box"><span id="detail-booking-status">Confirmed</span></div>
+      </div>
+    </div>
+    <div class="cta-btn" onclick="cancelBooking(currentBookingId)">Cancel Reservation</div>
   </div>
 
   <!-- SCREEN: DETAIL -->
@@ -617,7 +659,7 @@ body.light-mode .cal-day.selected { color: #fff; }
       <div class="time-scroll" id="detail-time-slots"></div>
     </div>
 
-    <div class="cta-btn" onclick="showScreen('screen-booking')">Reserve Seat</div>
+    <div class="cta-btn" onclick="loadBooking()">Reserve Seat</div>
   </div>
 
   <!-- SCREEN: BOOKING -->
@@ -687,7 +729,14 @@ body.light-mode .cal-day.selected { color: #fff; }
       </div>
     </div>
 
-    <div class="cta-btn" onclick="alert('Booking Confirmed! (Mockup)')">Confirm & Pay</div>
+    <div class="cta-btn" onclick="confirmBooking()">Confirm & Pay</div>
+  </div>
+
+  <div class="nav-bar">
+    <div class="nav-item active" id="nav-home" onclick="navTo('home')"><div class="nav-icon">⌂</div><span>Home</span></div>
+    <div class="nav-item" id="nav-search" onclick="navTo('search')"><div class="nav-icon">🔍</div><span>Explore</span></div>
+    <div class="nav-item" id="nav-bookings" onclick="navTo('bookings')"><div class="nav-icon">📅</div><span>Bookings</span></div>
+    <div class="nav-item" id="nav-profile" onclick="navTo('profile')"><div class="nav-icon">👤</div><span>Profile</span></div>
   </div>
 
   <!-- MODAL: CALENDAR -->
@@ -831,21 +880,33 @@ body.light-mode .cal-day.selected { color: #fff; }
   ];
 
   let currentCafe = null;
+  let selectedSeat = null;
   let selectedDate = null;
   let selectedTime = null;
   let guestCount = 1;
+  let currentBookingId = null;
+  const bookings = [];
 
   // ───── NAVIGATION ─────
   function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(s => {
+      s.classList.remove('active');
+      s.scrollTop = 0;
+    });
     document.getElementById(id).classList.add('active');
-    window.scrollTo(0,0);
   }
 
   function navTo(target) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    const activeNav = document.getElementById('nav-' + target);
+    if(activeNav) activeNav.classList.add('active');
+
     if(target === 'home') showScreen('screen-home');
     else if(target === 'search') showScreen('screen-search');
-    else if(target === 'bookings') alert('Bookings history coming soon!');
+    else if(target === 'bookings') {
+      renderBookings();
+      showScreen('screen-bookings');
+    }
     else if(target === 'profile') showScreen('screen-profile');
   }
 
@@ -986,11 +1047,14 @@ body.light-mode .cal-day.selected { color: #fff; }
     // Seats
     const seatBox = document.getElementById('detail-seats');
     seatBox.innerHTML = '';
+    selectedSeat = null;
     for(let i=0; i<12; i++) {
+      const seatName = `${String.fromCharCode(65 + Math.floor(i/4))}${(i%4)+1}`;
       const isFree = Math.random() > 0.4;
-      const isSelected = i === 5; // Default selection
+      const isSelected = isFree && selectedSeat === null;
+      if(isSelected) selectedSeat = seatName;
       seatBox.innerHTML += `
-        <div class="seat ${isFree ? 'free' : 'taken'} ${isSelected ? 'selected' : ''}" onclick="selectSeat(this)">${String.fromCharCode(65 + Math.floor(i/4))}${(i%4)+1}</div>
+        <div class="seat ${isFree ? 'free' : 'taken'} ${isSelected ? 'selected' : ''}" onclick="selectSeat(this)">${seatName}</div>
       `;
     }
 
@@ -1009,12 +1073,16 @@ body.light-mode .cal-day.selected { color: #fff; }
     if(el.classList.contains('taken')) return;
     document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
     el.classList.add('selected');
+    selectedSeat = el.innerText;
+    const seatLabel = document.getElementById('booking-seat-id');
+    if(seatLabel) seatLabel.innerText = selectedSeat;
   }
 
   function selectTime(el) {
     if(el.classList.contains('taken')) return;
     document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
+    selectedTime = el.innerText;
   }
 
   function toggleFav(el) {
@@ -1036,6 +1104,14 @@ body.light-mode .cal-day.selected { color: #fff; }
   function loadBooking() {
     if(!currentCafe) return;
     document.getElementById('booking-cafe-name').innerText = currentCafe.name;
+
+    // Choose default seat if not selected
+    if(!selectedSeat) {
+      const firstFreeSeat = document.querySelector('.seat.free');
+      selectedSeat = firstFreeSeat ? firstFreeSeat.innerText : 'A1';
+    }
+    document.getElementById('booking-seat-id').innerText = selectedSeat;
+
     // Reset state
     selectedDate = null;
     selectedTime = null;
@@ -1043,17 +1119,113 @@ body.light-mode .cal-day.selected { color: #fff; }
     document.getElementById('booking-date').innerText = "Select Date";
     document.getElementById('booking-time').innerText = "Select Time";
     document.getElementById('guest-count').innerText = "1";
-    
+    updateBookingSummary();
+
     showScreen('screen-booking');
   }
 
-  document.querySelector('.cta-btn').addEventListener('click', loadBooking);
+  function renderBookings() {
+    const list = document.getElementById('bookings-list');
+    list.innerHTML = '';
+
+    if(bookings.length === 0) {
+      list.innerHTML = '<div style="text-align:center; padding:40px; color:#666;">No bookings yet. Tap Book New to reserve a seat.</div>';
+      return;
+    }
+
+    bookings.forEach(b => {
+      list.innerHTML += `
+        <div class="list-item" onclick="viewBooking(${b.id})">
+          <div class="list-info">
+            <div class="list-name">${b.cafeName}</div>
+            <div class="list-desc">${b.date} · ${b.time}</div>
+            <div class="list-dist">Seat ${b.seat} · ${b.guests} guest${b.guests > 1 ? 's' : ''}</div>
+          </div>
+        </div>
+        <div style="padding: 0 24px 18px; display:flex; justify-content:flex-end;">
+          <button class="theme-btn" style="font-size:0.7rem; padding: 8px 14px;" onclick="event.stopPropagation(); cancelBooking(${b.id})">Cancel</button>
+        </div>
+      `;
+    });
+  }
+
+  function confirmBooking() {
+    if(!currentCafe) return;
+    if(!selectedDate || !selectedTime) {
+      alert('Silakan pilih tanggal dan jam terlebih dahulu.');
+      return;
+    }
+
+    bookings.unshift({
+      id: Date.now(),
+      cafeName: currentCafe.name,
+      date: document.getElementById('booking-date').innerText,
+      time: document.getElementById('booking-time').innerText,
+      seat: selectedSeat || 'N/A',
+      guests: guestCount,
+      status: 'Confirmed'
+    });
+
+    alert('Booking berhasil dikonfirmasi!');
+    renderBookings();
+    showScreen('screen-bookings');
+  }
+
+  function viewBooking(id) {
+    const booking = bookings.find(b => b.id === id);
+    if(!booking) return;
+    currentBookingId = id;
+    document.getElementById('detail-booking-cafe').innerText = booking.cafeName;
+    document.getElementById('detail-booking-seat').innerText = booking.seat;
+    document.getElementById('detail-booking-date').innerText = booking.date;
+    document.getElementById('detail-booking-time').innerText = booking.time;
+    document.getElementById('detail-booking-guests').innerText = `${booking.guests} guest${booking.guests > 1 ? 's' : ''}`;
+    document.getElementById('detail-booking-status').innerText = booking.status;
+    showScreen('screen-booking-detail');
+  }
+
+  function cancelBooking(id) {
+    const index = bookings.findIndex(b => b.id === id);
+    if(index === -1) return;
+
+    if(!confirm('Batalkan reservasi ini?')) return;
+    bookings.splice(index, 1);
+    if(currentBookingId === id) {
+      currentBookingId = null;
+      showScreen('screen-bookings');
+    }
+    renderBookings();
+  }
 
   function updateGuests(delta) {
     guestCount += delta;
     if(guestCount < 1) guestCount = 1;
     if(guestCount > 10) guestCount = 10;
     document.getElementById('guest-count').innerText = guestCount;
+    updateBookingSummary();
+  }
+
+  function updateBookingSummary() {
+    const fee = 5000;
+    const deposit = 50000;
+    const total = fee + deposit;
+    const summary = document.querySelector('.summary-box');
+    if(summary) {
+      summary.innerHTML = `
+        <div class="sum-row">
+          <span>Reservation Fee</span>
+          <span>Rp ${fee.toLocaleString('id-ID')}</span>
+        </div>
+        <div class="sum-row">
+          <span>Deposit (Applied to Order)</span>
+          <span>Rp ${deposit.toLocaleString('id-ID')}</span>
+        </div>
+        <div class="sum-row total">
+          <span>Total to Pay Now</span>
+          <span class="sum-val gold">Rp ${total.toLocaleString('id-ID')}</span>
+        </div>
+      `;
+    }
   }
 
   // ───── CALENDAR MODAL ─────
@@ -1062,7 +1234,6 @@ body.light-mode .cal-day.selected { color: #fff; }
   function renderCalendar() {
     const grid = document.getElementById('cal-grid');
     const header = document.getElementById('cal-month-year');
-    const date = new Date(2025, 4, 1); // May 2025
     header.innerText = "May 2025";
     
     grid.innerHTML = '';
@@ -1099,20 +1270,22 @@ body.light-mode .cal-day.selected { color: #fff; }
     list.innerHTML = '';
     for(let h=8; h<=22; h++) {
       list.innerHTML += `
-        <div class="time-item" onclick="pickTime('${h}:00')">${h}:00</div>
+        <div class="time-item" onclick="pickTime('${h}:00', event)">${h}:00</div>
       `;
     }
   }
 
-  function pickTime(t) {
+  function pickTime(t, event) {
     selectedTime = t;
     document.querySelectorAll('.time-item').forEach(i => i.classList.remove('selected'));
-    event.target.classList.add('selected');
+    if(event && event.currentTarget) event.currentTarget.classList.add('selected');
   }
 
   function applyTime() {
     if(selectedTime) {
-      document.getElementById('booking-time').innerText = selectedTime + " - " + (parseInt(selectedTime)+2) + ":00 (2 Hours)";
+      const hours = parseInt(selectedTime.split(':')[0], 10);
+      const endHour = (hours + 2) % 24;
+      document.getElementById('booking-time').innerText = `${selectedTime} - ${String(endHour).padStart(2, '0')}:00 (2 Hours)`;
     }
     closeModal('modal-time');
   }
