@@ -30,13 +30,6 @@ body.light-mode { background: #f5f0e8; color: #0f0e0c; }
 .screen.active { display: block; }
 
 /* ── GLOBAL COMPONENTS ── */
-.status-bar {
-  height: 44px;
-  display: flex; align-items: flex-end; justify-content: space-between;
-  padding: 0 24px 8px; font-size: 0.7rem; font-weight: 500;
-  position: sticky; top: 0; background: inherit; z-index: 50;
-}
-
 .nav-bar {
   height: 70px;
   background: inherit;
@@ -77,7 +70,7 @@ body.light-mode .back-btn { background: rgba(0,0,0,0.05); }
 
 /* ── HOME SCREEN ── */
 .home-header {
-  padding: 0 24px 10px;
+  padding: 20px 24px 10px; /* Adjusted padding top */
   display: flex; justify-content: space-between; align-items: center;
 }
 
@@ -98,34 +91,50 @@ body.light-mode .back-btn { background: rgba(0,0,0,0.05); }
   cursor: pointer;
 }
 
-/* Toggle Switch */
+/* Toggle Switch with Icons */
 .switch {
   position: relative; display: inline-block;
-  width: 44px; height: 24px;
+  width: 60px; height: 30px;
 }
 
 .switch input { opacity: 0; width: 0; height: 0; }
 
 .slider {
   position: absolute; cursor: pointer; inset: 0;
-  background-color: #333; transition: .4s; border-radius: 24px;
+  background-color: #222; transition: .4s; border-radius: 30px;
   border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 8px;
+  font-size: 14px;
 }
 body.light-mode .slider { background-color: #fff; border-color: #ddd; }
 
+/* Icons inside slider */
+.slider .icon-moon { color: #f1c40f; }
+.slider .icon-sun { color: #f39c12; opacity: 0.5; }
+
+/* Moving circle (knob) */
 .slider:before {
   position: absolute; content: "";
-  height: 18px; width: 18px; left: 2px; bottom: 2px;
-  background-color: #888; transition: .4s; border-radius: 50%;
+  height: 24px; width: 24px; left: 3px; bottom: 3px;
+  background-color: #333; transition: .4s; border-radius: 50%;
+  z-index: 2;
 }
+body.light-mode .slider:before { background-color: #fff; border: 1px solid #ddd; }
 
 input:checked + .slider { background-color: #0f0e0c; border-color: #b8924a; }
 body.light-mode input:checked + .slider { background-color: #fff; border-color: #b8924a; }
 
 input:checked + .slider:before {
-  transform: translateX(20px);
+  transform: translateX(30px);
   background-color: #b8924a;
 }
+
+/* Change icon opacity based on state */
+input:not(:checked) + .slider .icon-moon { opacity: 1; }
+input:not(:checked) + .slider .icon-sun { opacity: 0.3; }
+input:checked + .slider .icon-moon { opacity: 0.3; }
+input:checked + .slider .icon-sun { opacity: 1; }
 
 .search-bar {
   margin: 16px 24px;
@@ -190,14 +199,25 @@ body.light-mode .cafe-card { background: #fff; border-color: #eee; box-shadow: 0
   height: 110px;
   background: linear-gradient(135deg, #2a1f18, #4a3020);
   position: relative;
+  overflow: hidden;
 }
+/* Fallback gradient if image missing */
 body.light-mode .card-img { background: linear-gradient(135deg, #c4b8a0, #d4c8a8); }
+
+.card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
 
 .card-badge {
   position: absolute; top: 10px; right: 10px;
   background: rgba(0,0,0,0.6);
   padding: 4px 10px; border-radius: 8px;
   font-size: 0.65rem; color: #fff;
+  z-index: 2;
 }
 
 .card-info { padding: 12px 14px; }
@@ -224,8 +244,16 @@ body.light-mode .list-item { border-color: #eee; }
   border-radius: 12px;
   background: #222;
   flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
 }
 body.light-mode .list-thumb { background: #ddd; }
+
+.list-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .list-info { flex: 1; }
 .list-name { font-size: 0.95rem; font-weight: 500; margin-bottom: 4px; }
@@ -234,7 +262,7 @@ body.light-mode .list-thumb { background: #ddd; }
 
 /* ── PROFILE SCREEN ── */
 .profile-header {
-  padding: 60px 24px 30px;
+  padding: 80px 24px 30px; /* Increased padding for space */
   text-align: center;
 }
 
@@ -264,15 +292,24 @@ body.light-mode .menu-item { border-color: #eee; }
 
 /* ── DETAIL SCREEN ── */
 .detail-hero {
-  height: 240px;
+  height: 280px;
   background: linear-gradient(135deg, #2a1f18, #4a3020);
   position: relative;
+  overflow: hidden;
 }
 body.light-mode .detail-hero { background: linear-gradient(135deg, #c4b8a0, #d4c8a8); }
 
+.detail-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+}
+
 .detail-hero-btns {
-  position: absolute; top: 50px; left: 20px; right: 20px;
+  position: absolute; top: 20px; left: 20px; right: 20px; /* Adjusted top */
   display: flex; justify-content: space-between;
+  z-index: 2;
 }
 
 .detail-content { padding: 24px; padding-bottom: 120px; }
@@ -342,7 +379,7 @@ body.light-mode .seat.selected { color: #fff; }
 body.light-mode .cta-btn { color: #fff; }
 
 /* ── BOOKING SCREEN ── */
-.booking-header { padding: 50px 24px 20px; display: flex; align-items: center; gap: 16px; }
+.booking-header { padding: 20px 24px 20px; display: flex; align-items: center; gap: 16px; } /* Adjusted padding top */
 
 .step-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
 .dot { width: 30px; height: 4px; border-radius: 2px; background: #333; }
@@ -419,25 +456,25 @@ body.light-mode .cal-day.selected { color: #fff; }
 
 <!-- SCREEN: HOME -->
 <div class="screen active" id="screen-home">
-  <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
-  
   <div class="home-header">
     <div>
       <div class="home-sub">Good Morning</div>
       <div style="font-size:0.8rem; color:#888; margin-top:4px;">Let's find a workspace</div>
     </div>
     <div class="header-actions">
-      <!-- Theme Toggle -->
+      <!-- Theme Toggle with Icons -->
       <label class="switch">
         <input type="checkbox" id="theme-toggle-input" onchange="setTheme(this.checked ? 'light' : 'dark')">
-        <span class="slider"></span>
+        <span class="slider">
+          <span class="icon-moon">🌙</span>
+          <span class="icon-sun">☀️</span>
+        </span>
       </label>
       <!-- Avatar -->
       <div class="avatar" onclick="showScreen('screen-profile')">MY</div>
     </div>
   </div>
 
-  <!-- Search Bar: Filters list on Home Screen -->
   <div class="search-bar">
     <svg width="16" height="16" fill="none" stroke="#b8924a" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input type="text" id="home-search-input" class="search-input" placeholder="Search café, area, vibe..." oninput="handleHomeSearch(this.value)">
@@ -455,34 +492,26 @@ body.light-mode .cal-day.selected { color: #fff; }
     <div class="section-more" onclick="showScreen('screen-list')">See all →</div>
   </div>
 
-  <!-- Horizontal Scroll -->
-  <div class="horizontal-scroll" id="home-horizontal-scroll">
-    <!-- Populated by JS -->
-  </div>
+  <div class="horizontal-scroll" id="home-horizontal-scroll"></div>
 
-  <!-- Vertical List -->
   <div class="section-header" id="header-list">
     <div class="section-title">Popular Near Campus</div>
   </div>
-  <div class="nearby-list" id="home-nearby-list">
-    <!-- Populated by JS -->
-  </div>
+  <div class="nearby-list" id="home-nearby-list"></div>
 </div>
 
-<!-- SCREEN: LIST (Generic for filters) -->
+<!-- SCREEN: LIST -->
 <div class="screen" id="screen-list">
-  <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
   <div class="top-bar">
     <div class="back-btn" onclick="showScreen('screen-home')">←</div>
     <div class="screen-title" id="list-title">All Cafes</div>
     <div style="width:36px"></div>
   </div>
-  <div class="nearby-list" id="generic-list" style="padding-top:20px;"></div>
+  <div class="nearby-list" id="generic-list" style="padding-top:10px;"></div>
 </div>
 
 <!-- SCREEN: PROFILE -->
 <div class="screen" id="screen-profile">
-  <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
   <div class="profile-header">
     <div class="avatar-lg">MY</div>
     <div class="profile-name">Mugis Yahya</div>
@@ -513,7 +542,6 @@ body.light-mode .cal-day.selected { color: #fff; }
 
 <!-- SCREEN: BOOKINGS -->
 <div class="screen" id="screen-bookings">
-  <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
   <div class="top-bar">
     <div class="back-btn" onclick="showScreen('screen-home')">←</div>
     <div class="screen-title">My Bookings</div>
@@ -529,6 +557,7 @@ body.light-mode .cal-day.selected { color: #fff; }
 <!-- SCREEN: DETAIL -->
 <div class="screen" id="screen-detail">
   <div class="detail-hero">
+    <img id="detail-hero-img" src="" alt="Cafe Image">
     <div class="detail-hero-btns">
       <div class="back-btn" onclick="showScreen('screen-home')" style="background:rgba(0,0,0,0.5); color:#fff;">←</div>
       <div class="back-btn" id="fav-btn" onclick="toggleFav(this)" style="background:rgba(0,0,0,0.5); color:#fff;">♡</div>
@@ -571,7 +600,6 @@ body.light-mode .cal-day.selected { color: #fff; }
 
 <!-- SCREEN: BOOKING -->
 <div class="screen" id="screen-booking">
-  <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
   <div class="booking-header">
     <div class="back-btn" onclick="showScreen('screen-detail')">←</div>
     <div class="screen-title">Reservation</div>
@@ -646,10 +674,10 @@ body.light-mode .cal-day.selected { color: #fff; }
   <div class="nav-item" id="nav-profile" onclick="navTo('profile')"><div class="nav-icon">👤</div><span>Profile</span></div>
 </div>
 
-<!-- MODAL: CALENDAR -->
+<!-- MODALS -->
 <div class="modal-overlay" id="modal-calendar">
   <div class="modal-box">
-    <div class="cal-header" id="cal-month-year">May 2025</div>
+    <div class="cal-header">May 2025</div>
     <div class="cal-grid" id="cal-grid"></div>
     <div class="modal-actions">
       <div class="modal-btn cancel" onclick="closeModal('modal-calendar')">Cancel</div>
@@ -658,7 +686,6 @@ body.light-mode .cal-day.selected { color: #fff; }
   </div>
 </div>
 
-<!-- MODAL: TIME -->
 <div class="modal-overlay" id="modal-time">
   <div class="modal-box">
     <div class="cal-header">Select Time</div>
@@ -673,14 +700,16 @@ body.light-mode .cal-day.selected { color: #fff; }
 <script>
   // ───── DATA ─────
   const cafes = [
-    { id: 1, name: "Dingo Coffee - UII", desc: "Very close to campus entrance, great for WFC with power outlets.", dist: "0.1 km", tags: ["Coworking", "Power Outlets", "Student"], rating: 4.6, reviews: 1240, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Dingo+Coffee+UII", reviewsList: ["Great place for WFH!", "Nice coffee and friendly staff."] },
-    { id: 2, name: "99 Coffee Roaster", desc: "Large modern space, good food, long hours (until 2 AM).", dist: "0.5 km", tags: ["Hangout", "Modern", "Late Night"], rating: 4.7, reviews: 3500, mapsUrl: "https://www.google.com/maps/search/?api=1&query=99+Coffee+Roaster", reviewsList: ["Love the vibe here.", "Padel court is a nice bonus!"] },
-    { id: 3, name: "20 Kopi", desc: "Right beside UII, cozy vibe, popular with students.", dist: "0.2 km", tags: ["Coworking", "Cozy", "Student"], rating: 4.5, reviews: 890, mapsUrl: "https://www.google.com/maps/search/?api=1&query=20+Kopi", reviewsList: ["Legendary spot.", "Cheap and tasty coffee."] },
-    { id: 4, name: "Admeliora Coffee", desc: "24-hour spot, comfortable for late-night work/study.", dist: "1.2 km", tags: ["24 Hours", "Coworking"], rating: 4.6, reviews: 1100, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Admeliora+Coffee", reviewsList: ["My go-to for late night deadlines."] },
-    { id: 5, name: "Kemari Coffee", desc: "Affordable, cozy indoor/outdoor seating, student-friendly.", dist: "0.8 km", tags: ["Affordable", "Outdoor", "Hangout"], rating: 4.4, reviews: 760, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Kemari+Coffee", reviewsList: ["Very affordable prices."] },
-    { id: 6, name: "Eternity Coffee", desc: "24-hour option with nice views and workspace vibe.", dist: "1.5 km", tags: ["24 Hours", "View", "Workspace"], rating: 4.5, reviews: 980, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Eternity+Coffee", reviewsList: ["Great view at night."] },
-    { id: 7, name: "Good Luck Coffee", desc: "Comfortable for longer stays and studying.", dist: "0.9 km", tags: ["Coworking", "Study", "Quiet"], rating: 4.3, reviews: 540, mapsUrl: "https://www.google.com/maps/search/?api=1&query=Good+Luck+Coffee", reviewsList: ["Quiet enough for zoom meetings."] },
-    { id: 8, name: "CultureHead", desc: "Aesthetic and modern, popular among UII students.", dist: "1.1 km", tags: ["Aesthetic", "Modern", "Hangout"], rating: 4.7, reviews: 2100, mapsUrl: "https://www.google.com/maps/search/?api=1&query=CultureHead", reviewsList: ["Very instagrammable!"] },
+    { id: 1, name: "Dingo Coffee - UII", desc: "Very close to campus entrance, great for WFC.", dist: "0.1 km", tags: ["Coworking", "Power Outlets"], rating: 4.6, reviews: 1240, mapsUrl: "https://maps.google.com", reviewsList: ["Great place!"], img: "img/dingo.jpg" },
+    { id: 2, name: "99 Coffee Roaster", desc: "Large modern space, good food, long hours.", dist: "0.5 km", tags: ["Hangout", "Modern"], rating: 4.7, reviews: 3500, mapsUrl: "https://maps.google.com", reviewsList: ["Love the vibe."], img: "img/99coffee.jpeg" },
+    { id: 3, name: "20 Kopi", desc: "Right beside UII, cozy vibe, popular.", dist: "0.2 km", tags: ["Coworking", "Cozy"], rating: 4.5, reviews: 890, mapsUrl: "https://maps.google.com", reviewsList: ["Legendary spot."], img: "img/20kopi.png" },
+    { id: 4, name: "Admeliora Coffee", desc: "24-hour spot, comfortable for work.", dist: "1.2 km", tags: ["24 Hours", "Coworking"], rating: 4.6, reviews: 1100, mapsUrl: "https://maps.google.com", reviewsList: ["My go-to."], img: "img/admeliora.png" },
+    { id: 5, name: "Kemari Coffee", desc: "Affordable, cozy seating, student-friendly.", dist: "0.8 km", tags: ["Affordable", "Hangout"], rating: 4.4, reviews: 760, mapsUrl: "https://maps.google.com", reviewsList: ["Nice spot."], img: "img/kemari.png" },
+    { id: 6, name: "Eternity Coffee", desc: "24-hour option with nice views.", dist: "1.5 km", tags: ["24 Hours", "View"], rating: 4.5, reviews: 980, mapsUrl: "https://maps.google.com", reviewsList: ["Great view."], img: "img/eternity.jpg" },
+    { id: 7, name: "Good Luck Coffee", desc: "Comfortable for longer stays.", dist: "0.9 km", tags: ["Coworking", "Study"], rating: 4.3, reviews: 540, mapsUrl: "https://maps.google.com", reviewsList: ["Quiet."], img: "img/goodluck.png" },
+    { id: 8, name: "CultureHead", desc: "Aesthetic and modern, popular.", dist: "1.1 km", tags: ["Aesthetic", "Modern"], rating: 4.7, reviews: 2100, mapsUrl: "https://maps.google.com", reviewsList: ["Insta-worthy."], img: "img/culture.png" },
+    { id: 9, name: "Awor Coffee", desc: "Comfortable spot in Jakal area.", dist: "1.3 km", tags: ["Cozy", "Hangout"], rating: 4.4, reviews: 320, mapsUrl: "https://maps.google.com", reviewsList: ["Nice."], img: "" },
+    { id: 10, name: "Bento Kopi", desc: "24-hour, scenic and modern.", dist: "2.0 km", tags: ["24 Hours", "Scenic"], rating: 4.6, reviews: 1550, mapsUrl: "https://maps.google.com", reviewsList: ["Cool arch."], img: "" }
   ];
 
   let currentCafe = null;
@@ -703,7 +732,7 @@ body.light-mode .cal-day.selected { color: #fff; }
     if(activeNav) activeNav.classList.add('active');
 
     if(target === 'home') showScreen('screen-home');
-    else if(target === 'search') showScreen('screen-home'); // Search is now on home
+    else if(target === 'search') showScreen('screen-home');
     else if(target === 'bookings') {
       renderBookings();
       showScreen('screen-bookings');
@@ -717,6 +746,13 @@ body.light-mode .cal-day.selected { color: #fff; }
     renderVertical(cafes);
   }
 
+  function createImageHTML(imgSrc) {
+      if(imgSrc) {
+          return `<img src="${imgSrc}" alt="Cafe" onerror="this.style.display='none'">`;
+      }
+      return '';
+  }
+
   function renderHorizontal() {
     const hScroll = document.getElementById('home-horizontal-scroll');
     hScroll.innerHTML = '';
@@ -724,7 +760,10 @@ body.light-mode .cal-day.selected { color: #fff; }
       const seats = Math.floor(Math.random() * 20) + 1;
       hScroll.innerHTML += `
         <div class="cafe-card" onclick="loadDetail(${c.id})">
-          <div class="card-img"><div class="card-badge">${seats} Seats</div></div>
+          <div class="card-img">
+            ${createImageHTML(c.img)}
+            <div class="card-badge">${seats} Seats</div>
+          </div>
           <div class="card-info">
             <div class="card-name">${c.name}</div>
             <div class="card-loc">📍 ${c.dist}</div>
@@ -748,7 +787,7 @@ body.light-mode .cal-day.selected { color: #fff; }
     data.forEach(c => {
       vList.innerHTML += `
         <div class="list-item" onclick="loadDetail(${c.id})">
-          <div class="list-thumb"></div>
+          <div class="list-thumb">${createImageHTML(c.img)}</div>
           <div class="list-info">
             <div class="list-name">${c.name}</div>
             <div class="list-desc">${c.desc}</div>
@@ -759,26 +798,22 @@ body.light-mode .cal-day.selected { color: #fff; }
     });
   }
 
-  // New Home Search Logic
   function handleHomeSearch(query) {
     const q = query.toLowerCase();
     if(q.length === 0) {
         renderVertical(cafes);
-        // Restore horizontal scroll and headers
         document.getElementById('home-horizontal-scroll').style.display = 'flex';
         document.getElementById('header-horizontal').style.display = 'flex';
         document.getElementById('header-list').style.display = 'flex';
         return;
     }
     
-    // Filter
     const results = cafes.filter(c => 
       c.name.toLowerCase().includes(q) || 
       c.desc.toLowerCase().includes(q) ||
       c.tags.some(t => t.toLowerCase().includes(q))
     );
 
-    // Hide horizontal scroll to make room for results
     document.getElementById('home-horizontal-scroll').style.display = 'none';
     document.getElementById('header-horizontal').style.display = 'none';
     document.getElementById('header-list').style.display = 'none';
@@ -787,7 +822,6 @@ body.light-mode .cal-day.selected { color: #fff; }
   }
 
   function filterHome(type, btn) {
-    // Reset search input
     document.getElementById('home-search-input').value = '';
     
     document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
@@ -818,7 +852,7 @@ body.light-mode .cal-day.selected { color: #fff; }
     data.forEach(c => {
       list.innerHTML += `
         <div class="list-item" onclick="loadDetail(${c.id})">
-          <div class="list-thumb"></div>
+          <div class="list-thumb">${createImageHTML(c.img)}</div>
           <div class="list-info">
             <div class="list-name">${c.name}</div>
             <div class="list-desc">${c.desc}</div>
@@ -839,6 +873,15 @@ body.light-mode .cal-day.selected { color: #fff; }
     document.getElementById('detail-stars').innerText = '★'.repeat(Math.round(currentCafe.rating)) + ' ' + currentCafe.rating;
     document.getElementById('detail-reviews').innerText = `(${currentCafe.reviews} reviews)`;
     document.getElementById('detail-map-link').href = currentCafe.mapsUrl;
+    
+    // Hero Image
+    const heroImg = document.getElementById('detail-hero-img');
+    if(currentCafe.img) {
+        heroImg.src = currentCafe.img;
+        heroImg.style.display = 'block';
+    } else {
+        heroImg.style.display = 'none';
+    }
 
     const tagBox = document.getElementById('detail-tags');
     tagBox.innerHTML = '';
@@ -978,7 +1021,6 @@ body.light-mode .cal-day.selected { color: #fff; }
   // ───── CALENDAR MODAL ─────
   function renderCalendar() {
     const grid = document.getElementById('cal-grid');
-    document.getElementById('cal-month-year').innerText = "May 2025";
     grid.innerHTML = '';
     const days = ['S','M','T','W','T','F','S'];
     days.forEach(d => grid.innerHTML += `<div class="cal-day-name">${d}</div>`);
