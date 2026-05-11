@@ -84,15 +84,25 @@ body {
   border-radius: 20px; z-index: 100;
 }
 
+/* Layout Fix: Flex Column to stick nav to bottom */
 .screen {
   position: absolute; inset: 0;
-  overflow-y: auto; overflow-x: hidden;
   background: #0f0e0c;
   transition: opacity 0.3s ease;
   display: none;
+  flex-direction: column; /* Key change */
+  height: 100%;
 }
 
-.screen.active { display: block; }
+.screen.active { display: flex; }
+
+/* Scrollable area wrapper */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
 
 /* Light Mode */
 body.light-mode .phone-frame { border-color: #ccc; background: #f5f0e8; }
@@ -113,10 +123,10 @@ body.light-mode .theme-btn.active { background: #0f0e0c; color: #fff; }
   height: 70px;
   background: inherit;
   border-top: 1px solid rgba(255,255,255,0.05);
-  position: absolute; bottom: 0; left: 0; right: 0;
   display: flex; justify-content: space-around; align-items: center;
   padding-bottom: 10px;
   z-index: 90;
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 .nav-item {
@@ -226,7 +236,7 @@ body.light-mode .card-img { background: linear-gradient(135deg, #c4b8a0, #d4c8a8
 
 /* Near You List */
 .nearby-list {
-  padding: 0 24px 100px; /* Space for nav */
+  padding: 0 24px 20px; /* Removed bottom padding, handled by scroll container */
 }
 
 .list-item {
@@ -279,6 +289,21 @@ body.light-mode .list-thumb { background: #ddd; }
 .menu-icon { font-size: 1.2rem; width: 24px; text-align: center; }
 .menu-arrow { margin-left: auto; color: #666; }
 
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 40px;
+  color: #888;
+}
+.empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
+.empty-text { font-size: 1rem; font-weight: 500; }
+.empty-sub { font-size: 0.8rem; margin-top: 8px; }
+
 /* ── SEARCH SCREEN ── */
 .search-header {
   position: sticky; top: 0; background: inherit; z-index: 10;
@@ -287,7 +312,7 @@ body.light-mode .list-thumb { background: #ddd; }
 }
 
 .search-results {
-  padding: 20px 24px 100px;
+  padding: 20px 24px 20px;
 }
 
 /* ── DETAIL SCREEN ── */
@@ -305,7 +330,7 @@ body.light-mode .detail-hero { background: linear-gradient(135deg, #c4b8a0, #d4c
 
 .detail-content {
   padding: 24px;
-  padding-bottom: 120px;
+  padding-bottom: 100px; /* Space for fixed CTA */
 }
 
 .rating-row {
@@ -386,7 +411,7 @@ body.light-mode .cta-btn { color: #fff; }
 .dot.active { background: #b8924a; width: 40px; }
 .dot.done { background: #b8924a; }
 
-.booking-form { padding: 0 24px 100px; }
+.booking-form { padding: 0 24px 20px; }
 
 .form-group { margin-bottom: 20px; }
 .form-label { font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; color: #b8924a; margin-bottom: 8px; display: block; }
@@ -465,52 +490,50 @@ body.light-mode .cal-day.selected { color: #fff; }
 </div>
 
 <div class="phone-frame" id="phone">
-  <!-- Notch logic handled by CSS -->
   
   <!-- SCREEN: HOME -->
   <div class="screen active" id="screen-home">
-    <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
-    
-    <div style="padding: 0 0 10px 24px; display: flex; justify-content: space-between; align-items: center;">
-        <div style="font-size:0.7rem; letter-spacing:1px; color:#888; text-transform:uppercase;">Good Morning</div>
-        <div class="avatar" onclick="showScreen('screen-profile')" style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #b8924a, #8a6830); margin-right:24px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.7rem; cursor:pointer;">YA</div>
+    <div class="scroll-area">
+      <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
+      
+      <div style="padding: 0 0 10px 24px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size:0.7rem; letter-spacing:1px; color:#888; text-transform:uppercase;">Good Morning</div>
+          <div class="avatar" onclick="showScreen('screen-profile')" style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #b8924a, #8a6830); margin-right:24px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.7rem; cursor:pointer;">MY</div>
+      </div>
+
+      <div class="home-greet">
+        <div class="home-main">Where would you<br/>like to work today?</div>
+      </div>
+
+      <div class="search-bar" onclick="showScreen('screen-search')">
+        <svg width="16" height="16" fill="none" stroke="#b8924a" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span style="color:#666">Search café, area, vibe...</span>
+      </div>
+
+      <div class="filter-chips">
+        <div class="chip active" onclick="filterHome('all', this)">All</div>
+        <div class="chip" onclick="filterHome('coworking', this)">Coworking</div>
+        <div class="chip" onclick="filterHome('date', this)">Date Spot</div>
+        <div class="chip" onclick="filterHome('hangout', this)">Hangout</div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">Near You</div>
+        <div class="section-more" onclick="showScreen('screen-list')">See all →</div>
+      </div>
+
+      <div class="horizontal-scroll" id="home-horizontal-scroll">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="section-header" style="margin-top:10px;">
+        <div class="section-title">Popular Near Campus</div>
+      </div>
+      <div class="nearby-list" id="home-nearby-list">
+        <!-- Populated by JS -->
+      </div>
     </div>
 
-    <div class="home-greet">
-      <div class="home-main">Where would you<br/>like to work today?</div>
-    </div>
-
-    <div class="search-bar" onclick="showScreen('screen-search')">
-      <svg width="16" height="16" fill="none" stroke="#b8924a" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <span style="color:#666">Search café, area, vibe...</span>
-    </div>
-
-    <div class="filter-chips">
-      <div class="chip active" onclick="filterHome('all', this)">All</div>
-      <div class="chip" onclick="filterHome('coworking', this)">Coworking</div>
-      <div class="chip" onclick="filterHome('date', this)">Date Spot</div>
-      <div class="chip" onclick="filterHome('hangout', this)">Hangout</div>
-    </div>
-
-    <div class="section-header">
-      <div class="section-title">Near You</div>
-      <div class="section-more" onclick="showScreen('screen-list')">See all →</div>
-    </div>
-
-    <!-- Horizontal Scroll -->
-    <div class="horizontal-scroll" id="home-horizontal-scroll">
-      <!-- Populated by JS -->
-    </div>
-
-    <!-- Vertical List -->
-    <div class="section-header" style="margin-top:10px;">
-      <div class="section-title">Popular Near Campus</div>
-    </div>
-    <div class="nearby-list" id="home-nearby-list">
-      <!-- Populated by JS -->
-    </div>
-
-    <!-- Nav Bar -->
     <div class="nav-bar">
       <div class="nav-item active" onclick="navTo('home')"><div class="nav-icon">⌂</div><span>Home</span></div>
       <div class="nav-item" onclick="navTo('search')"><div class="nav-icon">🔍</div><span>Explore</span></div>
@@ -521,52 +544,58 @@ body.light-mode .cal-day.selected { color: #fff; }
 
   <!-- SCREEN: LIST (Generic for filters) -->
   <div class="screen" id="screen-list">
-    <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
-    <div class="top-bar">
-      <div class="back-btn" onclick="showScreen('screen-home')">←</div>
-      <div class="screen-title" id="list-title">All Cafes</div>
-      <div style="width:36px"></div>
+    <div class="scroll-area">
+      <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
+      <div class="top-bar">
+        <div class="back-btn" onclick="showScreen('screen-home')">←</div>
+        <div class="screen-title" id="list-title">All Cafes</div>
+        <div style="width:36px"></div>
+      </div>
+      <div class="nearby-list" id="generic-list" style="padding-top:20px;"></div>
     </div>
-    <div class="nearby-list" id="generic-list" style="padding-top:20px;"></div>
   </div>
 
   <!-- SCREEN: SEARCH -->
   <div class="screen" id="screen-search">
-    <div class="status-bar" style="position:relative; top:0;"><span>9:41</span><span>⚡ 📶</span></div>
-    <div class="search-header">
-      <div class="back-btn" onclick="showScreen('screen-home')">←</div>
-      <input type="text" id="search-input" class="search-input" placeholder="Type to search..." oninput="runSearch(this.value)" style="background:rgba(255,255,255,0.1); padding:12px; border-radius:12px; width:100%;">
+    <div class="scroll-area">
+      <div class="status-bar" style="position:relative; top:0;"><span>9:41</span><span>⚡ 📶</span></div>
+      <div class="search-header">
+        <div class="back-btn" onclick="showScreen('screen-home')">←</div>
+        <input type="text" id="search-input" class="search-input" placeholder="Type to search..." oninput="runSearch(this.value)" style="background:rgba(255,255,255,0.1); padding:12px; border-radius:12px; width:100%;">
+      </div>
+      <div class="search-results" id="search-results"></div>
     </div>
-    <div class="search-results" id="search-results"></div>
   </div>
 
   <!-- SCREEN: PROFILE -->
   <div class="screen" id="screen-profile">
-    <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
-    <div class="profile-header">
-      <div class="avatar-lg">YA</div>
-      <div class="profile-name">Yusuf Arif</div>
-      <div class="profile-email">yusuf.arif@email.com</div>
-    </div>
-    <div class="profile-menu">
-      <div class="menu-item" onclick="alert('Edit Profile clicked')">
-        <div class="menu-icon">✏️</div>
-        <div>Edit Profile</div>
-        <div class="menu-arrow">›</div>
+    <div class="scroll-area">
+      <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
+      <div class="profile-header">
+        <div class="avatar-lg">MY</div>
+        <div class="profile-name">Mugis Yahya</div>
+        <div class="profile-email">mugisyahya@gmail.com</div>
       </div>
-      <div class="menu-item" onclick="alert('Payment Method clicked')">
-        <div class="menu-icon">💳</div>
-        <div>Payment Methods</div>
-        <div class="menu-arrow">›</div>
-      </div>
-      <div class="menu-item" onclick="alert('History clicked')">
-        <div class="menu-icon">📜</div>
-        <div>Booking History</div>
-        <div class="menu-arrow">›</div>
-      </div>
-      <div class="menu-item" style="color:#c8450a;" onclick="showScreen('screen-home')">
-        <div class="menu-icon">🚪</div>
-        <div>Log Out</div>
+      <div class="profile-menu">
+        <div class="menu-item" onclick="alert('Edit Profile clicked')">
+          <div class="menu-icon">✏️</div>
+          <div>Edit Profile</div>
+          <div class="menu-arrow">›</div>
+        </div>
+        <div class="menu-item" onclick="showEmptyState('Payment Methods', 'You haven\'t choose any payment methods yet')">
+          <div class="menu-icon">💳</div>
+          <div>Payment Methods</div>
+          <div class="menu-arrow">›</div>
+        </div>
+        <div class="menu-item" onclick="showEmptyState('Booking History', 'You haven\'t made any bookings yet.')">
+          <div class="menu-icon">📜</div>
+          <div>Booking History</div>
+          <div class="menu-arrow">›</div>
+        </div>
+        <div class="menu-item" style="color:#c8450a;" onclick="showScreen('screen-home')">
+          <div class="menu-icon">🚪</div>
+          <div>Log Out</div>
+        </div>
       </div>
     </div>
     <div class="nav-bar">
@@ -577,116 +606,138 @@ body.light-mode .cal-day.selected { color: #fff; }
     </div>
   </div>
 
+  <!-- SCREEN: EMPTY STATE (Used for History/Payment/Bookings) -->
+  <div class="screen" id="screen-empty">
+    <div class="scroll-area">
+      <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
+      <div class="top-bar">
+        <div class="back-btn" onclick="showScreen('screen-profile')">←</div>
+        <div class="screen-title" id="empty-title">Title</div>
+        <div style="width:36px"></div>
+      </div>
+      <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <div class="empty-text" id="empty-text">No data found.</div>
+      </div>
+    </div>
+    <!-- Nav bar usually not needed for deep sub-menus but included for consistency if needed -->
+  </div>
+
   <!-- SCREEN: DETAIL -->
   <div class="screen" id="screen-detail">
-    <div class="detail-hero">
-      <div class="detail-hero-btns">
-        <div class="back-btn" onclick="showScreen('screen-home')" style="background:rgba(0,0,0,0.5); color:#fff;">←</div>
-        <div class="back-btn" id="fav-btn" onclick="toggleFav(this)" style="background:rgba(0,0,0,0.5); color:#fff;">♡</div>
+    <div class="scroll-area">
+      <div class="detail-hero">
+        <div class="detail-hero-btns">
+          <div class="back-btn" onclick="showScreen('screen-home')" style="background:rgba(0,0,0,0.5); color:#fff;">←</div>
+          <div class="back-btn" id="fav-btn" onclick="toggleFav(this)" style="background:rgba(0,0,0,0.5); color:#fff;">♡</div>
+        </div>
+      </div>
+
+      <div class="detail-content">
+        <h2 class="screen-title" id="detail-name">Cafe Name</h2>
+        
+        <div class="rating-row">
+          <span class="rating-stars" id="detail-stars">★★★★★</span>
+          <span class="rating-count" id="detail-reviews">(0 reviews)</span>
+          <span class="status-badge" id="detail-status">Open Now</span>
+        </div>
+
+        <div class="vibe-tags" id="detail-tags"></div>
+
+        <p style="font-size:0.9rem; color:#aaa; margin-bottom:16px; line-height:1.5;" id="detail-desc">
+          Description loading...
+        </p>
+
+        <a id="detail-map-link" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:8px; color:#b8924a; font-size:0.85rem; margin-bottom:24px; text-decoration:none;">
+          📍 View on Google Maps
+        </a>
+
+        <div class="reviews-section">
+          <div class="section-title">What people say</div>
+          <div id="detail-reviews-list"></div>
+        </div>
+
+        <div class="seat-map-title">Real-Time Seat Map</div>
+        <div class="seat-grid" id="detail-seats"></div>
+
+        <div class="time-selector-title">Select Time</div>
+        <div class="time-scroll" id="detail-time-slots"></div>
       </div>
     </div>
-
-    <div class="detail-content">
-      <h2 class="screen-title" id="detail-name">Cafe Name</h2>
-      
-      <div class="rating-row">
-        <span class="rating-stars" id="detail-stars">★★★★★</span>
-        <span class="rating-count" id="detail-reviews">(0 reviews)</span>
-        <span class="status-badge" id="detail-status">Open Now</span>
-      </div>
-
-      <div class="vibe-tags" id="detail-tags"></div>
-
-      <p style="font-size:0.9rem; color:#aaa; margin-bottom:16px; line-height:1.5;" id="detail-desc">
-        Description loading...
-      </p>
-
-      <a id="detail-map-link" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:8px; color:#b8924a; font-size:0.85rem; margin-bottom:24px; text-decoration:none;">
-        📍 View on Google Maps
-      </a>
-
-      <div class="reviews-section">
-        <div class="section-title">What people say</div>
-        <div id="detail-reviews-list"></div>
-      </div>
-
-      <div class="seat-map-title">Real-Time Seat Map</div>
-      <div class="seat-grid" id="detail-seats"></div>
-
-      <div class="time-selector-title">Select Time</div>
-      <div class="time-scroll" id="detail-time-slots"></div>
-    </div>
-
-    <div class="cta-btn" onclick="showScreen('screen-booking')">Reserve Seat</div>
+    
+    <!-- Nav bar removed from detail to make room for CTA, standard for detail views, but keeping back button -->
+    <div class="cta-btn" onclick="loadBooking()">Reserve Seat</div>
   </div>
 
   <!-- SCREEN: BOOKING -->
   <div class="screen" id="screen-booking">
-    <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
-    <div class="booking-header">
-      <div class="back-btn" onclick="showScreen('screen-detail')">←</div>
-      <div class="screen-title">Reservation</div>
-    </div>
-
-    <div class="step-dots">
-      <div class="dot done"></div>
-      <div class="dot active"></div>
-      <div class="dot"></div>
-    </div>
-
-    <div class="booking-form">
-      <div class="form-group">
-        <label class="form-label">Selected Cafe</label>
-        <div class="form-box">
-          <span id="booking-cafe-name">Cafe Name</span>
-          <span style="color:#888; font-size:0.8rem" id="booking-seat-id">Seat B2</span>
-        </div>
+    <div class="scroll-area">
+      <div class="status-bar"><span>9:41</span><span>⚡ 📶</span></div>
+      <div class="booking-header">
+        <div class="back-btn" onclick="showScreen('screen-detail')">←</div>
+        <div class="screen-title">Reservation</div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Date</label>
-        <div class="form-box" onclick="openModal('modal-calendar')">
-          <span id="booking-date">Select Date</span>
-          <span>📅</span>
-        </div>
+      <div class="step-dots">
+        <div class="dot done"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Time</label>
-        <div class="form-box" onclick="openModal('modal-time')">
-          <span id="booking-time">Select Time</span>
-          <span>⏱</span>
+      <div class="booking-form">
+        <div class="form-group">
+          <label class="form-label">Selected Cafe</label>
+          <div class="form-box">
+            <span id="booking-cafe-name">Cafe Name</span>
+            <span style="color:#888; font-size:0.8rem" id="booking-seat-id">Seat B2</span>
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label class="form-label">Guests</label>
-        <div class="guest-counter">
-          <span style="font-size:0.9rem;">Number of People</span>
-          <div style="display:flex; align-items:center; gap:16px;">
-            <div class="counter-btn" onclick="updateGuests(-1)">−</div>
-            <div class="counter-num" id="guest-count">1</div>
-            <div class="counter-btn" onclick="updateGuests(1)">+</div>
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <div class="form-box" onclick="openModal('modal-calendar')">
+            <span id="booking-date">Select Date</span>
+            <span>📅</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Time</label>
+          <div class="form-box" onclick="openModal('modal-time')">
+            <span id="booking-time">Select Time</span>
+            <span>⏱</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Guests</label>
+          <div class="guest-counter">
+            <span style="font-size:0.9rem;">Number of People</span>
+            <div style="display:flex; align-items:center; gap:16px;">
+              <div class="counter-btn" onclick="updateGuests(-1)">−</div>
+              <div class="counter-num" id="guest-count">1</div>
+              <div class="counter-btn" onclick="updateGuests(1)">+</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-box">
+          <div class="sum-row">
+            <span>Reservation Fee</span>
+            <span>Rp 5.000</span>
+          </div>
+          <div class="sum-row">
+            <span>Deposit (Applied to Order)</span>
+            <span>Rp 50.000</span>
+          </div>
+          <div class="sum-row total">
+            <span>Total to Pay Now</span>
+            <span class="sum-val gold">Rp 55.000</span>
           </div>
         </div>
       </div>
-
-      <div class="summary-box">
-        <div class="sum-row">
-          <span>Reservation Fee</span>
-          <span>Rp 5.000</span>
-        </div>
-        <div class="sum-row">
-          <span>Deposit (Applied to Order)</span>
-          <span>Rp 50.000</span>
-        </div>
-        <div class="sum-row total">
-          <span>Total to Pay Now</span>
-          <span class="sum-val gold">Rp 55.000</span>
-        </div>
-      </div>
     </div>
-
+    
     <div class="cta-btn" onclick="alert('Booking Confirmed! (Mockup)')">Confirm & Pay</div>
   </div>
 
@@ -839,13 +890,15 @@ body.light-mode .cal-day.selected { color: #fff; }
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    window.scrollTo(0,0);
+    // Scroll to top when switching screens
+    const scrollArea = document.querySelector('.screen.active .scroll-area');
+    if (scrollArea) scrollArea.scrollTop = 0;
   }
 
   function navTo(target) {
     if(target === 'home') showScreen('screen-home');
     else if(target === 'search') showScreen('screen-search');
-    else if(target === 'bookings') alert('Bookings history coming soon!');
+    else if(target === 'bookings') showEmptyState('Bookings', 'You haven\'t made any bookings yet.');
     else if(target === 'profile') showScreen('screen-profile');
   }
 
@@ -902,7 +955,6 @@ body.light-mode .cal-day.selected { color: #fff; }
     // Filter logic
     const filtered = cafes.filter(c => {
       if(type === 'all') return true;
-      // Simple tag matching logic
       return c.tags.some(t => t.toLowerCase().includes(type));
     });
 
@@ -950,6 +1002,12 @@ body.light-mode .cal-day.selected { color: #fff; }
         </div>
       `;
     });
+  }
+
+  function showEmptyState(title, text) {
+    document.getElementById('empty-title').innerText = title;
+    document.getElementById('empty-text').innerText = text;
+    showScreen('screen-empty');
   }
 
   // ───── DETAIL LOGIC ─────
@@ -1046,8 +1104,6 @@ body.light-mode .cal-day.selected { color: #fff; }
     
     showScreen('screen-booking');
   }
-
-  document.querySelector('.cta-btn').addEventListener('click', loadBooking);
 
   function updateGuests(delta) {
     guestCount += delta;
