@@ -72,15 +72,45 @@ body.light-mode .back-btn { background: rgba(0,0,0,0.05); }
 .home-header {
   padding: 20px 24px 10px;
   display: flex; justify-content: space-between; align-items: center;
+  position: relative; /* Required for absolute centering */
+  min-height: 60px;
 }
 
-.home-greet { padding: 0 24px 10px; }
-.home-sub { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: #b8924a; }
-.home-main { font-family: ‘Cormorant Garamond’, serif; font-size: 1.6rem; line-height: 1.2; margin-top: 4px; }
+/* Text Logo - Top Left */
+.header-text-logo {
+  font-family: ‘Cormorant Garamond’, serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  color: #f5f0e8; /* Cream for dark mode */
+  z-index: 2;
+  transition: color 0.3s;
+}
+
+body.light-mode .header-text-logo {
+  color: #0f0e0c; /* Ink for light mode */
+}
+
+/* App Icon Logo - Top Middle */
+.header-logo-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px; 
+  height: 44px;
+  z-index: 1;
+}
+
+.header-logo-icon svg {
+  width: 100%;
+  height: 100%;
+}
 
 /* Header Actions: Toggle & Avatar */
 .header-actions {
   display: flex; align-items: center; gap: 12px;
+  z-index: 2;
 }
 
 .avatar {
@@ -456,10 +486,27 @@ body.light-mode .cal-day.selected { color: #fff; }
 <!-- SCREEN: HOME -->
 <div class="screen active" id="screen-home">
   <div class="home-header">
-    <div>
-      <div class="home-sub">Good Morning</div>
-      <div style="font-size:0.8rem; color:#888; margin-top:4px;">Let's find a workspace</div>
+    <!-- Text Logo Top Left -->
+    <div class="header-text-logo">SELA</div>
+
+    <!-- App Icon Logo Top Middle -->
+    <div class="header-logo-icon">
+      <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer elegant frame -->
+        <circle cx="36" cy="36" r="33" stroke="#b8924a" stroke-width="0.75" opacity="0.6"/>
+        <!-- Inner geometric — abstrak celah/sela -->
+        <path d="M36 14 L50 28 L50 44 L36 58 L22 44 L22 28 Z" stroke="#b8924a" stroke-width="1" fill="none" opacity="0.5"/>
+        <!-- Center dot -->
+        <circle cx="36" cy="36" r="3" fill="#b8924a"/>
+        <!-- Four compass lines (subtle) -->
+        <line x1="36" y1="22" x2="36" y2="28" stroke="#b8924a" stroke-width="0.75" opacity="0.7"/>
+        <line x1="36" y1="44" x2="36" y2="50" stroke="#b8924a" stroke-width="0.75" opacity="0.7"/>
+        <line x1="22" y1="36" x2="28" y2="36" stroke="#b8924a" stroke-width="0.75" opacity="0.7"/>
+        <line x1="44" y1="36" x2="50" y2="36" stroke="#b8924a" stroke-width="0.75" opacity="0.7"/>
+      </svg>
     </div>
+
+    <!-- Actions Top Right -->
     <div class="header-actions">
       <label class="switch">
         <input type="checkbox" id="theme-toggle-input" onchange="setTheme(this.checked ? 'light' : 'dark')">
