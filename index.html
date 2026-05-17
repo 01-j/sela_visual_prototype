@@ -23,7 +23,7 @@ body.light-mode { background: #f5f0e8; color: #0f0e0c; }
 /* ── SCREENS ── */
 .screen {
   display: none;
-  padding-bottom: 90px; /* Space for fixed bottom nav */
+  padding-bottom: 90px; 
   min-height: 100vh;
 }
 
@@ -72,95 +72,54 @@ body.light-mode .back-btn { background: rgba(0,0,0,0.05); }
 .home-header {
   padding: 20px 24px 10px;
   display: flex; justify-content: space-between; align-items: center;
-  position: relative; /* Required for absolute centering */
+  position: relative;
   min-height: 60px;
 }
 
-/* Text Logo - Top Left */
 .header-text-logo {
   font-family: ‘Cormorant Garamond’, serif;
-  font-size: 1.5rem;
-  font-weight: 300;
-  letter-spacing: 0.25em;
-  color: #f5f0e8; /* Cream for dark mode */
-  z-index: 2;
-  transition: color 0.3s;
+  font-size: 1.5rem; font-weight: 300; letter-spacing: 0.25em;
+  color: #f5f0e8; z-index: 2; transition: color 0.3s;
 }
+body.light-mode .header-text-logo { color: #0f0e0c; }
 
-body.light-mode .header-text-logo {
-  color: #0f0e0c; /* Ink for light mode */
-}
-
-/* App Icon Logo - Top Middle */
 .header-logo-icon {
-  position: absolute;
-  left: 50%;
-  top: 50%;
+  position: absolute; left: 50%; top: 50%;
   transform: translate(-50%, -50%);
-  width: 44px; 
-  height: 44px;
-  z-index: 1;
+  width: 44px; height: 44px; z-index: 1;
 }
+.header-logo-icon svg { width: 100%; height: 100%; }
 
-.header-logo-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Header Actions: Toggle & Avatar */
-.header-actions {
-  display: flex; align-items: center; gap: 12px;
-  z-index: 2;
-}
+.header-actions { display: flex; align-items: center; gap: 12px; z-index: 2; }
 
 .avatar {
   width: 36px; height: 36px; border-radius: 50%;
   background: linear-gradient(135deg, #b8924a, #8a6830);
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 0.8rem; font-weight: 600;
-  cursor: pointer;
+  color: #fff; font-size: 0.8rem; font-weight: 600; cursor: pointer;
 }
 
-/* Toggle Switch with Icons */
-.switch {
-  position: relative; display: inline-block;
-  width: 60px; height: 30px;
-}
-
+.switch { position: relative; display: inline-block; width: 60px; height: 30px; }
 .switch input { opacity: 0; width: 0; height: 0; }
-
 .slider {
   position: absolute; cursor: pointer; inset: 0;
   background-color: #222; transition: .4s; border-radius: 30px;
   border: 1px solid rgba(255,255,255,0.1);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 8px;
-  font-size: 14px;
+  padding: 0 8px; font-size: 14px;
 }
 body.light-mode .slider { background-color: #fff; border-color: #ddd; }
-
-/* Icons inside slider */
 .slider .icon-moon { color: #f1c40f; }
 .slider .icon-sun { color: #f39c12; opacity: 0.5; }
-
-/* Moving circle (knob) */
 .slider:before {
   position: absolute; content: "";
   height: 24px; width: 24px; left: 3px; bottom: 3px;
-  background-color: #333; transition: .4s; border-radius: 50%;
-  z-index: 2;
+  background-color: #333; transition: .4s; border-radius: 50%; z-index: 2;
 }
 body.light-mode .slider:before { background-color: #fff; border: 1px solid #ddd; }
-
 input:checked + .slider { background-color: #0f0e0c; border-color: #b8924a; }
 body.light-mode input:checked + .slider { background-color: #fff; border-color: #b8924a; }
-
-input:checked + .slider:before {
-  transform: translateX(30px);
-  background-color: #b8924a;
-}
-
-/* Change icon opacity based on state */
+input:checked + .slider:before { transform: translateX(30px); background-color: #b8924a; }
 input:not(:checked) + .slider .icon-moon { opacity: 1; }
 input:not(:checked) + .slider .icon-sun { opacity: 0.3; }
 input:checked + .slider .icon-moon { opacity: 0.3; }
@@ -174,20 +133,11 @@ input:checked + .slider .icon-sun { opacity: 1; }
   display: flex; align-items: center; gap: 12px;
 }
 body.light-mode .search-bar { background: #fff; border-color: #ddd; }
-
-.search-input { 
-  border: none; background: transparent; 
-  width: 100%; color: inherit; font-size: 0.9rem; outline: none; 
-}
+.search-input { border: none; background: transparent; width: 100%; color: inherit; font-size: 0.9rem; outline: none; }
 .search-input::placeholder { color: #666; }
 
-.filter-chips {
-  padding: 0 24px 20px;
-  display: flex; gap: 10px;
-  overflow-x: auto;
-}
+.filter-chips { padding: 0 24px 20px; display: flex; gap: 10px; overflow-x: auto; }
 .filter-chips::-webkit-scrollbar { display: none; }
-
 .chip {
   padding: 8px 18px; border-radius: 20px;
   font-size: 0.75rem; white-space: nowrap;
@@ -195,23 +145,14 @@ body.light-mode .search-bar { background: #fff; border-color: #ddd; }
   color: #888; cursor: pointer; transition: all 0.2s;
 }
 body.light-mode .chip { border-color: #ddd; background: #fff; }
-
 .chip.active { background: #b8924a; color: #0f0e0c; border-color: #b8924a; }
 body.light-mode .chip.active { background: #0f0e0c; color: #fff; border-color: #0f0e0c; }
 
-.section-header {
-  padding: 0 24px 10px;
-  display: flex; justify-content: space-between; align-items: center;
-}
+.section-header { padding: 0 24px 10px; display: flex; justify-content: space-between; align-items: center; }
 .section-title { font-size: 0.8rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #888; }
 .section-more { font-size: 0.7rem; color: #b8924a; cursor: pointer; }
 
-.horizontal-scroll {
-  display: flex; gap: 16px;
-  padding: 0 24px 20px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-}
+.horizontal-scroll { display: flex; gap: 16px; padding: 0 24px 20px; overflow-x: auto; scroll-snap-type: x mandatory; }
 .horizontal-scroll::-webkit-scrollbar { display: none; }
 
 .cafe-card {
@@ -225,29 +166,29 @@ body.light-mode .chip.active { background: #0f0e0c; color: #fff; border-color: #
 body.light-mode .cafe-card { background: #fff; border-color: #eee; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 .cafe-card:active { transform: scale(0.98); }
 
-.card-img {
-  height: 110px;
-  background: linear-gradient(135deg, #2a1f18, #4a3020);
-  position: relative;
-  overflow: hidden;
-}
+.card-img { height: 110px; background: linear-gradient(135deg, #2a1f18, #4a3020); position: relative; overflow: hidden; }
 body.light-mode .card-img { background: linear-gradient(135deg, #c4b8a0, #d4c8a8); }
-
-.card-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  inset: 0;
-}
+.card-img img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
 
 .card-badge {
   position: absolute; top: 10px; right: 10px;
   background: rgba(0,0,0,0.6);
   padding: 4px 10px; border-radius: 8px;
   font-size: 0.65rem; color: #fff;
-  z-index: 2;
+  z-index: 2; display: flex; align-items: center; gap: 6px;
 }
+
+/* Crowd Indicator Lights */
+.crowd-indicator {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block;
+}
+.crowd-green { background: #4a9e6a; box-shadow: 0 0 6px rgba(74, 158, 106, 0.6); animation: pulse 2s infinite ease-in-out; }
+.crowd-yellow { background: #e6b800; box-shadow: 0 0 6px rgba(230, 184, 0, 0.6); animation: pulse 2s infinite ease-in-out; }
+.crowd-red { background: #c8450a; box-shadow: 0 0 6px rgba(200, 69, 10, 0.6); animation: pulse-fast 1s infinite ease-in-out; }
+
+@keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+@keyframes pulse-fast { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
 .card-info { padding: 12px 14px; }
 .card-name { font-family: ‘Cormorant Garamond’, serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
@@ -256,9 +197,7 @@ body.light-mode .card-img { background: linear-gradient(135deg, #c4b8a0, #d4c8a8
 .card-meta span.available { color: #4a9e6a; font-weight: 500; }
 
 /* Near You List */
-.nearby-list {
-  padding: 0 24px 20px;
-}
+.nearby-list { padding: 0 24px 20px; }
 
 .list-item {
   display: flex; gap: 14px;
@@ -277,12 +216,7 @@ body.light-mode .list-item { border-color: #eee; }
   position: relative;
 }
 body.light-mode .list-thumb { background: #ddd; }
-
-.list-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.list-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
 .list-info { flex: 1; }
 .list-name { font-size: 0.95rem; font-weight: 500; margin-bottom: 4px; }
@@ -290,11 +224,7 @@ body.light-mode .list-thumb { background: #ddd; }
 .list-dist { font-size: 0.7rem; color: #b8924a; margin-top: 4px; }
 
 /* ── PROFILE SCREEN ── */
-.profile-header {
-  padding: 80px 24px 30px;
-  text-align: center;
-}
-
+.profile-header { padding: 80px 24px 30px; text-align: center; }
 .avatar-lg {
   width: 80px; height: 80px; border-radius: 50%;
   background: linear-gradient(135deg, #b8924a, #8a6830);
@@ -302,69 +232,37 @@ body.light-mode .list-thumb { background: #ddd; }
   display: flex; align-items: center; justify-content: center;
   font-size: 2rem; color: #fff;
 }
-
 .profile-name { font-family: ‘Cormorant Garamond’, serif; font-size: 1.8rem; }
 .profile-email { font-size: 0.8rem; color: #888; margin-top: 4px; }
-
 .profile-menu { padding: 20px 24px; }
-
 .menu-item {
   display: flex; align-items: center; gap: 16px;
   padding: 18px 0;
   border-bottom: 1px solid rgba(255,255,255,0.05);
-  cursor: pointer;
-  font-size: 0.9rem;
+  cursor: pointer; font-size: 0.9rem;
 }
 body.light-mode .menu-item { border-color: #eee; }
 .menu-icon { font-size: 1.2rem; width: 24px; text-align: center; }
 .menu-arrow { margin-left: auto; color: #666; }
 
 /* ── DETAIL SCREEN ── */
-.detail-hero {
-  height: 280px;
-  background: linear-gradient(135deg, #2a1f18, #4a3020);
-  position: relative;
-  overflow: hidden;
-}
+.detail-hero { height: 280px; background: linear-gradient(135deg, #2a1f18, #4a3020); position: relative; overflow: hidden; }
 body.light-mode .detail-hero { background: linear-gradient(135deg, #c4b8a0, #d4c8a8); }
-
-.detail-hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.6;
-}
-
-.detail-hero-btns {
-  position: absolute; top: 20px; left: 20px; right: 20px;
-  display: flex; justify-content: space-between;
-  z-index: 2;
-}
-
+.detail-hero img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+.detail-hero-btns { position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; z-index: 2; }
 .detail-content { padding: 24px; padding-bottom: 120px; }
 
 .rating-row { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
 .rating-stars { color: #b8924a; font-size: 0.9rem; }
 .rating-count { font-size: 0.8rem; color: #888; }
-.status-badge {
-  background: rgba(74,158,106,0.15); color: #4a9e6a;
-  padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 500;
-}
+.status-badge { background: rgba(74,158,106,0.15); color: #4a9e6a; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 500; }
 
 .vibe-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
-.tag {
-  padding: 6px 12px; border-radius: 20px;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  font-size: 0.75rem; color: #aaa;
-}
+.tag { padding: 6px 12px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; color: #aaa; }
 body.light-mode .tag { background: #f0f0f0; border-color: #ddd; }
 
 .reviews-section { margin-top: 24px; }
-.review-card {
-  background: rgba(255,255,255,0.03);
-  border-radius: 12px; padding: 16px;
-  margin-top: 12px;
-}
+.review-card { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px; margin-top: 12px; }
 body.light-mode .review-card { background: #fff; border: 1px solid #eee; }
 .review-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.8rem; }
 .review-text { font-size: 0.85rem; color: #ccc; line-height: 1.4; }
@@ -372,13 +270,7 @@ body.light-mode .review-text { color: #555; }
 
 .seat-map-title { font-size: 0.8rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #b8924a; margin-top: 24px; margin-bottom: 12px; }
 .seat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-
-.seat {
-  aspect-ratio: 1; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.7rem; font-weight: 600; cursor: pointer;
-  transition: all 0.2s;
-}
+.seat { aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .seat.free { background: rgba(74,158,106,0.15); border: 1px solid rgba(74,158,106,0.3); color: #4a9e6a; }
 .seat.taken { background: rgba(200,69,10,0.15); border: 1px solid rgba(200,69,10,0.3); color: #c8450a; opacity: 0.6; cursor: not-allowed; }
 .seat.selected { background: #b8924a; border-color: #b8924a; color: #0f0e0c; }
@@ -387,19 +279,12 @@ body.light-mode .seat.selected { color: #fff; }
 .time-selector-title { font-size: 0.8rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #b8924a; margin-top: 24px; margin-bottom: 12px; }
 .time-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
 .time-scroll::-webkit-scrollbar { display: none; }
-
-.time-slot {
-  padding: 10px 18px; border-radius: 10px;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  font-size: 0.85rem; cursor: pointer; flex-shrink: 0;
-  transition: all 0.2s;
-}
+.time-slot { padding: 10px 18px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; cursor: pointer; flex-shrink: 0; transition: all 0.2s; }
 .time-slot.active { background: #b8924a; color: #0f0e0c; border-color: #b8924a; }
 
 .cta-btn {
   position: fixed; bottom: 80px; left: 20px; right: 20px;
-  background: #b8924a;
-  color: #0f0e0c; text-align: center; padding: 16px;
+  background: #b8924a; color: #0f0e0c; text-align: center; padding: 16px;
   border-radius: 16px; font-weight: 600;
   letter-spacing: 1px; text-transform: uppercase;
   cursor: pointer; z-index: 100;
@@ -409,75 +294,47 @@ body.light-mode .cta-btn { color: #fff; }
 
 /* ── BOOKING SCREEN ── */
 .booking-header { padding: 20px 24px 20px; display: flex; align-items: center; gap: 16px; }
-
 .step-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
 .dot { width: 30px; height: 4px; border-radius: 2px; background: #333; }
 .dot.active { background: #b8924a; width: 40px; }
 .dot.done { background: #b8924a; }
-
 .booking-form { padding: 0 24px 120px; }
-
 .form-group { margin-bottom: 20px; }
 .form-label { font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; color: #b8924a; margin-bottom: 8px; display: block; }
-.form-box {
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px; padding: 16px;
-  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-}
+.form-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
 body.light-mode .form-box { background: #fff; border-color: #ddd; }
-
-.guest-counter {
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px; padding: 12px 16px;
-}
+.guest-counter { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 16px; }
 .counter-btn { width: 32px; height: 32px; border-radius: 50%; background: #333; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; }
 .counter-num { font-size: 1.2rem; font-weight: 600; min-width: 30px; text-align: center; }
-
-.summary-box {
-  background: rgba(184,146,74,0.1); border: 1px solid rgba(184,146,74,0.2);
-  border-radius: 16px; padding: 20px; margin-top: 24px;
-}
+.summary-box { background: rgba(184,146,74,0.1); border: 1px solid rgba(184,146,74,0.2); border-radius: 16px; padding: 20px; margin-top: 24px; }
 .sum-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color: #aaa; }
 .sum-row.total { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; color: #fff; font-weight: 600; }
 .sum-val.gold { color: #b8924a; }
 
 /* Calendar & Time Modals */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-  display: none; align-items: center; justify-content: center; z-index: 200;
-}
-.modal-box {
-  background: #1a1a1a; border-radius: 20px;
-  width: 90%; max-width: 320px; padding: 24px;
-  border: 1px solid rgba(255,255,255,0.1);
-}
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 200; }
+.modal-box { background: #1a1a1a; border-radius: 20px; width: 90%; max-width: 320px; padding: 24px; border: 1px solid rgba(255,255,255,0.1); }
 body.light-mode .modal-box { background: #fff; }
-
 .cal-header { text-align: center; font-size: 1.1rem; font-weight: 500; margin-bottom: 20px; }
 .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
 .cal-day-name { font-size: 0.7rem; color: #888; padding: 8px; }
-.cal-day {
-  padding: 10px; border-radius: 50%; font-size: 0.8rem; cursor: pointer;
-  transition: background 0.2s;
-}
+.cal-day { padding: 10px; border-radius: 50%; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
 .cal-day:hover { background: rgba(255,255,255,0.1); }
 .cal-day.disabled { color: #444; cursor: default; }
 .cal-day.selected { background: #b8924a; color: #0f0e0c; }
 body.light-mode .cal-day.selected { color: #fff; }
-
 .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-.modal-btn {
-  flex: 1; padding: 12px; text-align: center; border-radius: 10px; cursor: pointer; font-size: 0.9rem;
-}
+.modal-btn { flex: 1; padding: 12px; text-align: center; border-radius: 10px; cursor: pointer; font-size: 0.9rem; }
 .modal-btn.cancel { background: #333; color: #aaa; }
 .modal-btn.apply { background: #b8924a; color: #0f0e0c; font-weight: 600; }
-
 .time-list { max-height: 300px; overflow-y: auto; }
-.time-item {
-  padding: 14px; border-bottom: 1px solid #333; cursor: pointer; display: flex; justify-content: space-between;
-}
+.time-item { padding: 14px; border-bottom: 1px solid #333; cursor: pointer; display: flex; justify-content: space-between; }
 .time-item.selected { color: #b8924a; }
+
+/* Warning Modal Specifics */
+.modal-warning-text { font-size: 0.85rem; line-height: 1.6; color: #aaa; margin-bottom: 20px; text-align: center; }
+body.light-mode .modal-warning-text { color: #555; }
+.modal-warning-icon { font-size: 2.5rem; text-align: center; margin-bottom: 16px; }
 
 </style>
 </head>
@@ -486,27 +343,18 @@ body.light-mode .cal-day.selected { color: #fff; }
 <!-- SCREEN: HOME -->
 <div class="screen active" id="screen-home">
   <div class="home-header">
-    <!-- Text Logo Top Left -->
     <div class="header-text-logo">SELA</div>
-
-    <!-- App Icon Logo Top Middle -->
     <div class="header-logo-icon">
       <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Outer elegant frame -->
         <circle cx="36" cy="36" r="33" stroke="#b8924a" stroke-width="0.75" opacity="0.6"/>
-        <!-- Inner geometric — abstrak celah/sela -->
         <path d="M36 14 L50 28 L50 44 L36 58 L22 44 L22 28 Z" stroke="#b8924a" stroke-width="1" fill="none" opacity="0.5"/>
-        <!-- Center dot -->
         <circle cx="36" cy="36" r="3" fill="#b8924a"/>
-        <!-- Four compass lines (subtle) -->
         <line x1="36" y1="22" x2="36" y2="28" stroke="#b8924a" stroke-width="0.75" opacity="0.7"/>
         <line x1="36" y1="44" x2="36" y2="50" stroke="#b8924a" stroke-width="0.75" opacity="0.7"/>
         <line x1="22" y1="36" x2="28" y2="36" stroke="#b8924a" stroke-width="0.75" opacity="0.7"/>
         <line x1="44" y1="36" x2="50" y2="36" stroke="#b8924a" stroke-width="0.75" opacity="0.7"/>
       </svg>
     </div>
-
-    <!-- Actions Top Right -->
     <div class="header-actions">
       <label class="switch">
         <input type="checkbox" id="theme-toggle-input" onchange="setTheme(this.checked ? 'light' : 'dark')">
@@ -552,6 +400,16 @@ body.light-mode .cal-day.selected { color: #fff; }
     <div style="width:36px"></div>
   </div>
   <div class="nearby-list" id="generic-list" style="padding-top:10px;"></div>
+</div>
+
+<!-- SCREEN: FAVORITES -->
+<div class="screen" id="screen-saved">
+  <div class="top-bar">
+    <div class="back-btn" onclick="showScreen('screen-home')">←</div>
+    <div class="screen-title">Saved Cafes</div>
+    <div style="width:36px"></div>
+  </div>
+  <div class="nearby-list" id="favorites-list" style="padding-top:10px;"></div>
 </div>
 
 <!-- SCREEN: PROFILE -->
@@ -604,7 +462,7 @@ body.light-mode .cal-day.selected { color: #fff; }
     <img id="detail-hero-img" src="" alt="Cafe Image">
     <div class="detail-hero-btns">
       <div class="back-btn" onclick="showScreen('screen-home')" style="background:rgba(0,0,0,0.5); color:#fff;">←</div>
-      <div class="back-btn" id="fav-btn" onclick="toggleFav(this)" style="background:rgba(0,0,0,0.5); color:#fff;">♡</div>
+      <div class="back-btn" id="fav-btn" onclick="toggleFav()" style="background:rgba(0,0,0,0.5); color:#fff;">♡</div>
     </div>
   </div>
 
@@ -708,13 +566,14 @@ body.light-mode .cal-day.selected { color: #fff; }
     </div>
   </div>
 
-  <div class="cta-btn" onclick="confirmBooking()">Confirm & Pay</div>
+  <div class="cta-btn" onclick="initiatePayment()">Confirm & Pay</div>
 </div>
 
 <div class="nav-bar">
   <div class="nav-item active" id="nav-home" onclick="navTo('home')"><div class="nav-icon">⌂</div><span>Home</span></div>
   <div class="nav-item" id="nav-search" onclick="navTo('search')"><div class="nav-icon">🔍</div><span>Explore</span></div>
   <div class="nav-item" id="nav-bookings" onclick="navTo('bookings')"><div class="nav-icon">📅</div><span>Bookings</span></div>
+  <div class="nav-item" id="nav-saved" onclick="navTo('saved')"><div class="nav-icon">♡</div><span>Saved</span></div>
   <div class="nav-item" id="nav-profile" onclick="navTo('profile')"><div class="nav-icon">👤</div><span>Profile</span></div>
 </div>
 
@@ -741,19 +600,35 @@ body.light-mode .cal-day.selected { color: #fff; }
   </div>
 </div>
 
+<!-- WARNING MODAL -->
+<div class="modal-overlay" id="modal-warning">
+  <div class="modal-box">
+    <div class="modal-warning-icon">⚠️</div>
+    <div class="cal-header">Important Reminder</div>
+    <div class="modal-warning-text">
+      Grace period is <strong>15 minutes</strong> after reservation was made. If you don't show up after the grace period, your reservation will be cancelled and your deposit will be forfeited.
+    </div>
+    <div class="modal-actions">
+      <div class="modal-btn cancel" onclick="closeModal('modal-warning')">Cancel</div>
+      <div class="modal-btn apply" onclick="finalizeBooking()">Agree & Pay</div>
+    </div>
+  </div>
+</div>
+
 <script>
   // ───── DATA ─────
+  // Added 'crowd' property: 0=Green, 1=Yellow, 2=Red
   const cafes = [
-    { id: 1, name: "Dingo Coffee - UII", desc: "Very close to campus entrance, great for WFC.", dist: "0.1 km", tags: ["Coworking", "Power Outlets"], rating: 4.6, reviews: 1240, mapsUrl: "https://maps.google.com", reviewsList: ["Great place!"], img: "img/dingo.jpg" },
-    { id: 2, name: "99 Coffee Roaster", desc: "Large modern space, good food, long hours.", dist: "0.5 km", tags: ["Hangout", "Modern"], rating: 4.7, reviews: 3500, mapsUrl: "https://maps.google.com", reviewsList: ["Love the vibe."], img: "img/99coffee.jpeg" },
-    { id: 3, name: "20 Kopi", desc: "Right beside UII, cozy vibe, popular.", dist: "0.2 km", tags: ["Coworking", "Cozy", "Date Spot"], rating: 4.5, reviews: 890, mapsUrl: "https://maps.google.com", reviewsList: ["Legendary spot."], img: "img/20kopi.png" },
-    { id: 4, name: "Admeliora Coffee", desc: "24-hour spot, comfortable for work.", dist: "1.2 km", tags: ["24 Hours", "Coworking"], rating: 4.6, reviews: 1100, mapsUrl: "https://maps.google.com", reviewsList: ["My go-to."], img: "img/admeliora.png" },
-    { id: 5, name: "Kemari Coffee", desc: "Affordable, cozy seating, student-friendly.", dist: "0.8 km", tags: ["Affordable", "Hangout"], rating: 4.4, reviews: 760, mapsUrl: "https://maps.google.com", reviewsList: ["Nice spot."], img: "img/kemari.png" },
-    { id: 6, name: "Eternity Coffee", desc: "24-hour option with nice views.", dist: "1.5 km", tags: ["24 Hours", "View", "Date Spot"], rating: 4.5, reviews: 980, mapsUrl: "https://maps.google.com", reviewsList: ["Great view."], img: "img/eternity.png" },
-    { id: 7, name: "Good Luck Coffee", desc: "Comfortable for longer stays.", dist: "0.9 km", tags: ["Coworking", "Study"], rating: 4.3, reviews: 540, mapsUrl: "https://maps.google.com", reviewsList: ["Quiet."], img: "img/goodluck.png" },
-    { id: 8, name: "CultureHead", desc: "Aesthetic and modern, popular.", dist: "1.1 km", tags: ["Aesthetic", "Modern", "Hangout"], rating: 4.7, reviews: 2100, mapsUrl: "https://maps.google.com", reviewsList: ["Insta-worthy."], img: "img/culture.png" },
-    { id: 9, name: "Awor Coffee", desc: "Comfortable spot in Jakal area.", dist: "1.3 km", tags: ["Cozy", "Hangout"], rating: 4.4, reviews: 320, mapsUrl: "https://maps.google.com", reviewsList: ["Nice."], img: "img/awor.png" },
-    { id: 10, name: "Bento Kopi", desc: "24-hour, scenic and modern.", dist: "2.0 km", tags: ["24 Hours", "Scenic", "Date Spot"], rating: 4.6, reviews: 1550, mapsUrl: "https://maps.google.com", reviewsList: ["Cool arch."], img: "img/bento.png" }
+    { id: 1, name: "Dingo Coffee - UII", desc: "Very close to campus entrance, great for WFC.", dist: "0.1 km", tags: ["Coworking", "Power Outlets"], rating: 4.6, reviews: 1240, mapsUrl: "https://maps.google.com", reviewsList: ["Great place!"], img: "img/dingo.jpg", crowd: 0 },
+    { id: 2, name: "99 Coffee Roaster", desc: "Large modern space, good food, long hours.", dist: "0.5 km", tags: ["Hangout", "Modern"], rating: 4.7, reviews: 3500, mapsUrl: "https://maps.google.com", reviewsList: ["Love the vibe."], img: "img/99coffee.jpeg", crowd: 1 },
+    { id: 3, name: "20 Kopi", desc: "Right beside UII, cozy vibe, popular.", dist: "0.2 km", tags: ["Coworking", "Cozy", "Date Spot"], rating: 4.5, reviews: 890, mapsUrl: "https://maps.google.com", reviewsList: ["Legendary spot."], img: "img/20kopi.png", crowd: 2 },
+    { id: 4, name: "Admeliora Coffee", desc: "24-hour spot, comfortable for work.", dist: "1.2 km", tags: ["24 Hours", "Coworking"], rating: 4.6, reviews: 1100, mapsUrl: "https://maps.google.com", reviewsList: ["My go-to."], img: "img/admeliora.png", crowd: 0 },
+    { id: 5, name: "Kemari Coffee", desc: "Affordable, cozy seating, student-friendly.", dist: "0.8 km", tags: ["Affordable", "Hangout"], rating: 4.4, reviews: 760, mapsUrl: "https://maps.google.com", reviewsList: ["Nice spot."], img: "img/kemari.png", crowd: 1 },
+    { id: 6, name: "Eternity Coffee", desc: "24-hour option with nice views.", dist: "1.5 km", tags: ["24 Hours", "View", "Date Spot"], rating: 4.5, reviews: 980, mapsUrl: "https://maps.google.com", reviewsList: ["Great view."], img: "img/eternity.png", crowd: 0 },
+    { id: 7, name: "Good Luck Coffee", desc: "Comfortable for longer stays.", dist: "0.9 km", tags: ["Coworking", "Study"], rating: 4.3, reviews: 540, mapsUrl: "https://maps.google.com", reviewsList: ["Quiet."], img: "img/goodluck.png", crowd: 1 },
+    { id: 8, name: "CultureHead", desc: "Aesthetic and modern, popular.", dist: "1.1 km", tags: ["Aesthetic", "Modern", "Hangout"], rating: 4.7, reviews: 2100, mapsUrl: "https://maps.google.com", reviewsList: ["Insta-worthy."], img: "img/culture.png", crowd: 2 },
+    { id: 9, name: "Awor Coffee", desc: "Comfortable spot in Jakal area.", dist: "1.3 km", tags: ["Cozy", "Hangout"], rating: 4.4, reviews: 320, mapsUrl: "https://maps.google.com", reviewsList: ["Nice."], img: "img/awor.png", crowd: 0 },
+    { id: 10, name: "Bento Kopi", desc: "24-hour, scenic and modern.", dist: "2.0 km", tags: ["24 Hours", "Scenic", "Date Spot"], rating: 4.6, reviews: 1550, mapsUrl: "https://maps.google.com", reviewsList: ["Cool arch."], img: "img/bento.png", crowd: 1 }
   ];
 
   let currentCafe = null;
@@ -762,6 +637,7 @@ body.light-mode .cal-day.selected { color: #fff; }
   let selectedTime = null;
   let guestCount = 1;
   const bookings = [];
+  const favorites = []; // Store IDs of favorite cafes
 
   // ───── NAVIGATION ─────
   function showScreen(id) {
@@ -781,6 +657,10 @@ body.light-mode .cal-day.selected { color: #fff; }
       renderBookings();
       showScreen('screen-bookings');
     }
+    else if(target === 'saved') {
+      renderFavorites();
+      showScreen('screen-saved');
+    }
     else if(target === 'profile') showScreen('screen-profile');
   }
 
@@ -791,10 +671,15 @@ body.light-mode .cal-day.selected { color: #fff; }
   }
 
   function createImageHTML(imgSrc) {
-      if(imgSrc) {
-          return `<img src="${imgSrc}" alt="Cafe" onerror="this.style.display='none'">`;
-      }
+      if(imgSrc) return `<img src="${imgSrc}" alt="Cafe" onerror="this.style.display='none'">`;
       return '';
+  }
+
+  // Helper to get crowd class
+  function getCrowdClass(level) {
+    if(level === 0) return 'crowd-green';
+    if(level === 1) return 'crowd-yellow';
+    return 'crowd-red';
   }
 
   function renderHorizontal() {
@@ -806,7 +691,10 @@ body.light-mode .cal-day.selected { color: #fff; }
         <div class="cafe-card" onclick="loadDetail(${c.id})">
           <div class="card-img">
             ${createImageHTML(c.img)}
-            <div class="card-badge">${seats} Seats</div>
+            <div class="card-badge">
+               <span class="crowd-indicator ${getCrowdClass(c.crowd)}"></span>
+               <span>${seats} Seats</span>
+            </div>
           </div>
           <div class="card-info">
             <div class="card-name">${c.name}</div>
@@ -842,10 +730,34 @@ body.light-mode .cal-day.selected { color: #fff; }
     });
   }
 
+  function renderFavorites() {
+    const list = document.getElementById('favorites-list');
+    list.innerHTML = '';
+    
+    const favCafes = cafes.filter(c => favorites.includes(c.id));
+
+    if(favCafes.length === 0) {
+      list.innerHTML = '<div style="text-align:center; padding:40px; color:#666;">No saved cafes yet.</div>';
+      return;
+    }
+
+    favCafes.forEach(c => {
+      list.innerHTML += `
+        <div class="list-item" onclick="loadDetail(${c.id})">
+          <div class="list-thumb">${createImageHTML(c.img)}</div>
+          <div class="list-info">
+            <div class="list-name">${c.name}</div>
+            <div class="list-desc">${c.desc}</div>
+            <div class="list-dist">📍 ${c.dist}</div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
   function handleHomeSearch(query) {
-    // Reset active chips
     document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
-    document.querySelector('.filter-chips .chip').classList.add('active'); // Set "All" active
+    document.querySelector('.filter-chips .chip').classList.add('active');
     
     const q = query.toLowerCase();
     if(q.length === 0) {
@@ -871,14 +783,10 @@ body.light-mode .cal-day.selected { color: #fff; }
   }
 
   function filterHome(type, btn) {
-    // Clear search input
     document.getElementById('home-search-input').value = '';
-    
-    // Update active state
     document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
     btn.classList.add('active');
 
-    // Show/Hide Horizontal scroll based on filter
     const hScroll = document.getElementById('home-horizontal-scroll');
     const hHeader = document.getElementById('header-horizontal');
     const listTitle = document.getElementById('home-list-title');
@@ -892,7 +800,6 @@ body.light-mode .cal-day.selected { color: #fff; }
         hScroll.style.display = 'none';
         hHeader.style.display = 'none';
         
-        // Update Title based on category
         if(type === 'coworking') listTitle.innerText = "Coworking Spaces";
         else if(type === 'date') listTitle.innerText = "Date Spots";
         else if(type === 'hangout') listTitle.innerText = "Hangout Spots";
@@ -940,6 +847,14 @@ body.light-mode .cal-day.selected { color: #fff; }
       `;
     });
 
+    // Update Favorite Icon State
+    const favBtn = document.getElementById('fav-btn');
+    if(favorites.includes(currentCafe.id)) {
+      favBtn.innerText = '♥️';
+    } else {
+      favBtn.innerText = '♡';
+    }
+
     const seatBox = document.getElementById('detail-seats');
     seatBox.innerHTML = '';
     selectedSeat = null;
@@ -955,14 +870,11 @@ body.light-mode .cal-day.selected { color: #fff; }
 
     const timeBox = document.getElementById('detail-time-slots');
     timeBox.innerHTML = '';
-    // Reset selectedTime on load to avoid carrying over from previous cafe
     selectedTime = null; 
     for(let h=8; h<=22; h++) {
       const isBusy = Math.random() > 0.7;
-      // Select first available time by default
       const isFirstAvailable = !isBusy && selectedTime === null;
       if(isFirstAvailable) selectedTime = `${h}:00`;
-
       timeBox.innerHTML += `<div class="time-slot ${isBusy ? 'taken' : ''} ${isFirstAvailable ? 'active' : ''}" onclick="selectTime(this)">${h}:00</div>`;
     }
 
@@ -984,9 +896,18 @@ body.light-mode .cal-day.selected { color: #fff; }
     selectedTime = el.innerText;
   }
 
-  function toggleFav(el) {
-    if(el.innerText === '♡') el.innerText = '♥️';
-    else el.innerText = '♡';
+  function toggleFav() {
+    if(!currentCafe) return;
+    const index = favorites.indexOf(currentCafe.id);
+    const btn = document.getElementById('fav-btn');
+
+    if (index > -1) {
+      favorites.splice(index, 1); // Remove
+      btn.innerText = '♡';
+    } else {
+      favorites.push(currentCafe.id); // Add
+      btn.innerText = '♥️';
+    }
   }
 
   // ───── BOOKING LOGIC ─────
@@ -1006,11 +927,9 @@ body.light-mode .cal-day.selected { color: #fff; }
     if(!selectedSeat) selectedSeat = 'A1';
     document.getElementById('booking-seat-id').innerText = selectedSeat;
 
-    // Date Reset
     selectedDate = null;
     document.getElementById('booking-date').innerText = "Select Date";
 
-    // Time Logic: Use selectedTime from detail screen if available
     if(selectedTime) {
         const startHour = parseInt(selectedTime);
         const endHour = startHour + 2;
@@ -1047,11 +966,15 @@ body.light-mode .cal-day.selected { color: #fff; }
     });
   }
 
-  function confirmBooking() {
+  function initiatePayment() {
     if(!currentCafe || !selectedDate || !selectedTime) {
       alert('Please select date and time.');
       return;
     }
+    openModal('modal-warning');
+  }
+
+  function finalizeBooking() {
     bookings.unshift({
       id: Date.now(),
       cafeName: currentCafe.name,
@@ -1060,6 +983,7 @@ body.light-mode .cal-day.selected { color: #fff; }
       seat: selectedSeat,
       guests: guestCount
     });
+    closeModal('modal-warning');
     alert('Booking Confirmed!');
     renderBookings();
     showScreen('screen-bookings');
@@ -1123,11 +1047,8 @@ body.light-mode .cal-day.selected { color: #fff; }
 
   // ───── THEME ─────
   function setTheme(theme) {
-    if(theme === 'light') {
-      document.body.classList.add('light-mode');
-    } else {
-      document.body.classList.remove('light-mode');
-    }
+    if(theme === 'light') document.body.classList.add('light-mode');
+    else document.body.classList.remove('light-mode');
   }
 
   // ───── INIT ─────
