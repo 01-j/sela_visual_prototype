@@ -6,6 +6,7 @@
 <title>SELA — Mobile App</title>
   <link rel="icon" type="image/png" href="img/sela.png" sizes="192x192">
 <link rel="apple-touch-icon" href="img/sela.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
@@ -21,36 +22,23 @@ body {
 
 body.light-mode { background: #f5f0e8; color: #0f0e0c; }
 
-.screen {
-  display: none;
-  padding-bottom: 90px; 
-  min-height: 100vh;
-}
+.screen { display: none; padding-bottom: 90px; min-height: 100vh; }
 .screen.active { display: block; }
 
 .nav-bar {
-  height: 70px;
-  background: inherit;
+  height: 70px; background: inherit;
   border-top: 1px solid rgba(255,255,255,0.05);
   position: fixed; bottom: 0; left: 0; right: 0;
   display: flex; justify-content: space-around; align-items: center;
-  padding-bottom: 10px;
-  z-index: 90;
-  backdrop-filter: blur(10px);
+  padding-bottom: 10px; z-index: 90; backdrop-filter: blur(10px);
 }
 body.light-mode .nav-bar { border-color: rgba(0,0,0,0.05); }
 
-.nav-item {
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-  font-size: 0.6rem; color: #555; cursor: pointer; transition: color 0.2s;
-}
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.6rem; color: #555; cursor: pointer; transition: color 0.2s; }
 .nav-item.active { color: #b8924a; }
 .nav-icon { font-size: 1.2rem; }
 
-.top-bar {
-  padding: 10px 20px 20px;
-  display: flex; align-items: center; justify-content: space-between;
-}
+.top-bar { padding: 10px 20px 20px; display: flex; align-items: center; justify-content: space-between; }
 .screen-title { font-family: ‘Cormorant Garamond’, serif; font-size: 1.4rem; font-weight: 400; }
 
 .back-btn {
@@ -62,41 +50,22 @@ body.light-mode .nav-bar { border-color: rgba(0,0,0,0.05); }
 body.light-mode .back-btn { background: rgba(0,0,0,0.05); }
 
 /* ── HOME SCREEN ── */
-.home-header {
-  padding: 20px 24px 10px;
-  display: flex; justify-content: space-between; align-items: center;
-  position: relative; min-height: 60px;
-}
+.home-header { padding: 20px 24px 10px; display: flex; justify-content: space-between; align-items: center; position: relative; min-height: 60px; }
 .header-text-logo { font-family: ‘Cormorant Garamond’, serif; font-size: 1.5rem; font-weight: 300; letter-spacing: 0.25em; color: #f5f0e8; z-index: 2; transition: color 0.3s; }
 body.light-mode .header-text-logo { color: #0f0e0c; }
 .header-logo-icon { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; z-index: 1; }
 .header-logo-icon svg { width: 100%; height: 100%; }
 .header-actions { display: flex; align-items: center; gap: 12px; z-index: 2; }
 
-.avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, #b8924a, #8a6830);
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 0.8rem; font-weight: 600; cursor: pointer;
-}
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #b8924a, #8a6830); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
 
 .switch { position: relative; display: inline-block; width: 60px; height: 30px; }
 .switch input { opacity: 0; width: 0; height: 0; }
-.slider {
-  position: absolute; cursor: pointer; inset: 0;
-  background-color: #222; transition: .4s; border-radius: 30px;
-  border: 1px solid rgba(255,255,255,0.1);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 8px; font-size: 14px;
-}
+.slider { position: absolute; cursor: pointer; inset: 0; background-color: #222; transition: .4s; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 8px; font-size: 14px; }
 body.light-mode .slider { background-color: #fff; border-color: #ddd; }
 .slider .icon-moon { color: #f1c40f; }
 .slider .icon-sun { color: #f39c12; opacity: 0.5; }
-.slider:before {
-  position: absolute; content: "";
-  height: 24px; width: 24px; left: 3px; bottom: 3px;
-  background-color: #333; transition: .4s; border-radius: 50%; z-index: 2;
-}
+.slider:before { position: absolute; content: ""; height: 24px; width: 24px; left: 3px; bottom: 3px; background-color: #333; transition: .4s; border-radius: 50%; z-index: 2; }
 body.light-mode .slider:before { background-color: #fff; border: 1px solid #ddd; }
 input:checked + .slider { background-color: #0f0e0c; border-color: #b8924a; }
 body.light-mode input:checked + .slider { background-color: #fff; border-color: #b8924a; }
@@ -106,25 +75,14 @@ input:not(:checked) + .slider .icon-sun { opacity: 0.3; }
 input:checked + .slider .icon-moon { opacity: 0.3; }
 input:checked + .slider .icon-sun { opacity: 1; }
 
-.search-bar {
-  margin: 16px 24px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 16px; padding: 14px 18px;
-  display: flex; align-items: center; gap: 12px;
-}
+.search-bar { margin: 16px 24px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 14px 18px; display: flex; align-items: center; gap: 12px; }
 body.light-mode .search-bar { background: #fff; border-color: #ddd; }
 .search-input { border: none; background: transparent; width: 100%; color: inherit; font-size: 0.9rem; outline: none; }
 .search-input::placeholder { color: #666; }
 
 .filter-chips { padding: 0 24px 20px; display: flex; gap: 10px; overflow-x: auto; }
 .filter-chips::-webkit-scrollbar { display: none; }
-.chip {
-  padding: 8px 18px; border-radius: 20px;
-  font-size: 0.75rem; white-space: nowrap;
-  border: 1px solid rgba(255,255,255,0.15);
-  color: #888; cursor: pointer; transition: all 0.2s;
-}
+.chip { padding: 8px 18px; border-radius: 20px; font-size: 0.75rem; white-space: nowrap; border: 1px solid rgba(255,255,255,0.15); color: #888; cursor: pointer; transition: all 0.2s; }
 body.light-mode .chip { border-color: #ddd; background: #fff; }
 .chip.active { background: #b8924a; color: #0f0e0c; border-color: #b8924a; }
 body.light-mode .chip.active { background: #0f0e0c; color: #fff; border-color: #0f0e0c; }
@@ -136,14 +94,7 @@ body.light-mode .chip.active { background: #0f0e0c; color: #fff; border-color: #
 .horizontal-scroll { display: flex; gap: 16px; padding: 0 24px 20px; overflow-x: auto; scroll-snap-type: x mandatory; }
 .horizontal-scroll::-webkit-scrollbar { display: none; }
 
-.cafe-card {
-  min-width: 200px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 18px; overflow: hidden;
-  cursor: pointer; scroll-snap-align: start;
-  transition: transform 0.2s;
-}
+.cafe-card { min-width: 200px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; overflow: hidden; cursor: pointer; scroll-snap-align: start; transition: transform 0.2s; }
 body.light-mode .cafe-card { background: #fff; border-color: #eee; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 .cafe-card:active { transform: scale(0.98); }
 
@@ -151,15 +102,8 @@ body.light-mode .cafe-card { background: #fff; border-color: #eee; box-shadow: 0
 body.light-mode .card-img { background: linear-gradient(135deg, #c4b8a0, #d4c8a8); }
 .card-img img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
 
-.card-badge {
-  position: absolute; top: 10px; right: 10px;
-  background: rgba(0,0,0,0.6);
-  padding: 4px 10px; border-radius: 8px;
-  font-size: 0.65rem; color: #fff;
-  z-index: 2; display: flex; align-items: center; gap: 6px;
-}
+.card-badge { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; color: #fff; z-index: 2; display: flex; align-items: center; gap: 6px; }
 
-/* Crowd Indicator Lights */
 .crowd-indicator { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 .crowd-green { background: #4a9e6a; box-shadow: 0 0 6px rgba(74, 158, 106, 0.6); animation: pulse 2s infinite ease-in-out; }
 .crowd-yellow { background: #e6b800; box-shadow: 0 0 6px rgba(230, 184, 0, 0.6); animation: pulse 2s infinite ease-in-out; }
@@ -174,21 +118,12 @@ body.light-mode .card-img { background: linear-gradient(135deg, #c4b8a0, #d4c8a8
 .card-meta { display: flex; justify-content: space-between; font-size: 0.7rem; }
 .card-meta span.available { color: #4a9e6a; font-weight: 500; }
 
-/* Near You List */
 .nearby-list { padding: 0 24px 20px; }
-
-.list-item {
-  display: flex; gap: 14px;
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  cursor: pointer;
-}
+.list-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
 body.light-mode .list-item { border-color: #eee; }
-
 .list-thumb { width: 60px; height: 60px; border-radius: 12px; background: #222; flex-shrink: 0; overflow: hidden; position: relative; }
 body.light-mode .list-thumb { background: #ddd; }
 .list-thumb img { width: 100%; height: 100%; object-fit: cover; }
-
 .list-info { flex: 1; }
 .list-name { font-size: 0.95rem; font-weight: 500; margin-bottom: 4px; }
 .list-desc { font-size: 0.75rem; color: #888; line-height: 1.3; }
@@ -206,30 +141,10 @@ body.light-mode .menu-item { border-color: #eee; }
 .menu-arrow { margin-left: auto; color: #666; }
 
 /* ── BOOKINGS SCREEN ── */
-.booking-item-container {
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding-bottom: 14px;
-  margin-bottom: 14px;
-}
+.booking-item-container { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 14px; margin-bottom: 14px; }
 body.light-mode .booking-item-container { border-color: #eee; }
-
-.booking-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-}
-
-.btn-cancel {
-  font-size: 0.7rem;
-  color: #c8450a;
-  background: rgba(200, 69, 10, 0.1);
-  border: 1px solid rgba(200, 69, 10, 0.2);
-  padding: 6px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s;
-}
+.booking-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+.btn-cancel { font-size: 0.7rem; color: #c8450a; background: rgba(200, 69, 10, 0.1); border: 1px solid rgba(200, 69, 10, 0.2); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
 .btn-cancel:active { background: rgba(200, 69, 10, 0.2); }
 body.light-mode .btn-cancel { color: #c8450a; background: rgba(200, 69, 10, 0.05); border-color: rgba(200, 69, 10, 0.15); }
 
@@ -239,16 +154,13 @@ body.light-mode .detail-hero { background: linear-gradient(135deg, #c4b8a0, #d4c
 .detail-hero img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
 .detail-hero-btns { position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; z-index: 2; }
 .detail-content { padding: 24px; padding-bottom: 120px; }
-
 .rating-row { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
 .rating-stars { color: #b8924a; font-size: 0.9rem; }
 .rating-count { font-size: 0.8rem; color: #888; }
 .status-badge { background: rgba(74,158,106,0.15); color: #4a9e6a; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 500; }
-
 .vibe-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
 .tag { padding: 6px 12px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; color: #aaa; }
 body.light-mode .tag { background: #f0f0f0; border-color: #ddd; }
-
 .reviews-section { margin-top: 24px; }
 .review-card { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px; margin-top: 12px; }
 body.light-mode .review-card { background: #fff; border: 1px solid #eee; }
@@ -270,14 +182,7 @@ body.light-mode .seat.selected { color: #fff; }
 .time-slot { padding: 10px 18px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; cursor: pointer; flex-shrink: 0; transition: all 0.2s; }
 .time-slot.active { background: #b8924a; color: #0f0e0c; border-color: #b8924a; }
 
-.cta-btn {
-  position: fixed; bottom: 80px; left: 20px; right: 20px;
-  background: #b8924a; color: #0f0e0c; text-align: center; padding: 16px;
-  border-radius: 16px; font-weight: 600;
-  letter-spacing: 1px; text-transform: uppercase;
-  cursor: pointer; z-index: 100;
-  box-shadow: 0 10px 30px rgba(184,146,74,0.3);
-}
+.cta-btn { position: fixed; bottom: 80px; left: 20px; right: 20px; background: #b8924a; color: #0f0e0c; text-align: center; padding: 16px; border-radius: 16px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; z-index: 100; box-shadow: 0 10px 30px rgba(184,146,74,0.3); }
 body.light-mode .cta-btn { color: #fff; }
 
 /* ── BOOKING SCREEN ── */
@@ -345,37 +250,24 @@ body.light-mode .modal-warning-text { color: #555; }
     <div class="header-actions">
       <label class="switch">
         <input type="checkbox" id="theme-toggle-input" onchange="setTheme(this.checked ? 'light' : 'dark')">
-        <span class="slider">
-          <span class="icon-moon">🌙</span>
-          <span class="icon-sun">☀️</span>
-        </span>
+        <span class="slider"><span class="icon-moon">🌙</span><span class="icon-sun">☀️</span></span>
       </label>
       <div class="avatar" onclick="showScreen('screen-profile')">MY</div>
     </div>
   </div>
-
   <div class="search-bar">
     <svg width="16" height="16" fill="none" stroke="#b8924a" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input type="text" id="home-search-input" class="search-input" placeholder="Search café, area, vibe..." oninput="handleHomeSearch(this.value)">
   </div>
-
   <div class="filter-chips">
     <div class="chip active" onclick="filterHome('all', this)">All</div>
     <div class="chip" onclick="filterHome('coworking', this)">Coworking</div>
     <div class="chip" onclick="filterHome('date', this)">Date Spot</div>
     <div class="chip" onclick="filterHome('hangout', this)">Hangout</div>
   </div>
-
-  <div class="section-header" id="header-horizontal">
-    <div class="section-title">Near You</div>
-    <div class="section-more" onclick="showScreen('screen-list')">See all →</div>
-  </div>
-
+  <div class="section-header" id="header-horizontal"><div class="section-title">Near You</div><div class="section-more" onclick="showScreen('screen-list')">See all →</div></div>
   <div class="horizontal-scroll" id="home-horizontal-scroll"></div>
-
-  <div class="section-header" id="header-list">
-    <div class="section-title" id="home-list-title">Popular Near Campus</div>
-  </div>
+  <div class="section-header" id="header-list"><div class="section-title" id="home-list-title">Popular Near Campus</div></div>
   <div class="nearby-list" id="home-nearby-list"></div>
 </div>
 
@@ -407,18 +299,10 @@ body.light-mode .modal-warning-text { color: #555; }
     <div class="profile-email">mugisyahya@gmail.com</div>
   </div>
   <div class="profile-menu">
-    <div class="menu-item" onclick="alert('Edit Profile clicked')">
-      <div class="menu-icon">✏️</div><div>Edit Profile</div><div class="menu-arrow">›</div>
-    </div>
-    <div class="menu-item" onclick="alert('Payment Method clicked')">
-      <div class="menu-icon">💳</div><div>Payment Methods</div><div class="menu-arrow">›</div>
-    </div>
-    <div class="menu-item" onclick="navTo('bookings')">
-      <div class="menu-icon">📜</div><div>Booking History</div><div class="menu-arrow">›</div>
-    </div>
-    <div class="menu-item" style="color:#c8450a;" onclick="showScreen('screen-home')">
-      <div class="menu-icon">🚪</div><div>Log Out</div>
-    </div>
+    <div class="menu-item" onclick="alert('Edit Profile clicked')"><div class="menu-icon">✏️</div><div>Edit Profile</div><div class="menu-arrow">›</div></div>
+    <div class="menu-item" onclick="alert('Payment Method clicked')"><div class="menu-icon">💳</div><div>Payment Methods</div><div class="menu-arrow">›</div></div>
+    <div class="menu-item" onclick="navTo('bookings')"><div class="menu-icon">📜</div><div>Booking History</div><div class="menu-arrow">›</div></div>
+    <div class="menu-item" style="color:#c8450a;" onclick="showScreen('screen-home')"><div class="menu-icon">🚪</div><div>Log Out</div></div>
   </div>
 </div>
 
@@ -429,10 +313,7 @@ body.light-mode .modal-warning-text { color: #555; }
     <div class="screen-title">My Bookings</div>
     <div style="width:36px"></div>
   </div>
-  <div class="section-header">
-    <div class="section-title">Upcoming Reservations</div>
-    <div class="section-more" onclick="showScreen('screen-home')">Book New</div>
-  </div>
+  <div class="section-header"><div class="section-title">Upcoming Reservations</div><div class="section-more" onclick="showScreen('screen-home')">Book New</div></div>
   <div class="nearby-list" id="bookings-list"></div>
 </div>
 
@@ -455,10 +336,7 @@ body.light-mode .modal-warning-text { color: #555; }
     <div class="vibe-tags" id="detail-tags"></div>
     <p style="font-size:0.9rem; color:#aaa; margin-bottom:16px; line-height:1.5;" id="detail-desc">Description loading...</p>
     <a id="detail-map-link" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:8px; color:#b8924a; font-size:0.85rem; margin-bottom:24px; text-decoration:none;">📍 View on Google Maps</a>
-    <div class="reviews-section">
-      <div class="section-title">What people say</div>
-      <div id="detail-reviews-list"></div>
-    </div>
+    <div class="reviews-section"><div class="section-title">What people say</div><div id="detail-reviews-list"></div></div>
     <div class="seat-map-title">Real-Time Seat Map</div>
     <div class="seat-grid" id="detail-seats"></div>
     <div class="time-selector-title">Select Time</div>
@@ -469,32 +347,17 @@ body.light-mode .modal-warning-text { color: #555; }
 
 <!-- SCREEN: BOOKING -->
 <div class="screen" id="screen-booking">
-  <div class="booking-header">
-    <div class="back-btn" onclick="showScreen('screen-detail')">←</div>
-    <div class="screen-title">Reservation</div>
-  </div>
+  <div class="booking-header"><div class="back-btn" onclick="showScreen('screen-detail')">←</div><div class="screen-title">Reservation</div></div>
   <div class="step-dots"><div class="dot done"></div><div class="dot active"></div><div class="dot"></div></div>
   <div class="booking-form">
-    <div class="form-group">
-      <label class="form-label">Selected Cafe</label>
-      <div class="form-box"><span id="booking-cafe-name">Cafe Name</span><span style="color:#888; font-size:0.8rem" id="booking-seat-id">Seat B2</span></div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Date</label>
-      <div class="form-box" onclick="openModal('modal-calendar')"><span id="booking-date">Select Date</span><span>📅</span></div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Time</label>
-      <div class="form-box" onclick="openModal('modal-time')"><span id="booking-time">Select Time</span><span>⏱</span></div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Guests</label>
+    <div class="form-group"><label class="form-label">Selected Cafe</label><div class="form-box"><span id="booking-cafe-name">Cafe Name</span><span style="color:#888; font-size:0.8rem" id="booking-seat-id">Seat B2</span></div></div>
+    <div class="form-group"><label class="form-label">Date</label><div class="form-box" onclick="openModal('modal-calendar')"><span id="booking-date">Select Date</span><span>📅</span></div></div>
+    <div class="form-group"><label class="form-label">Time</label><div class="form-box" onclick="openModal('modal-time')"><span id="booking-time">Select Time</span><span>⏱</span></div></div>
+    <div class="form-group"><label class="form-label">Guests</label>
       <div class="guest-counter">
         <span style="font-size:0.9rem;">Number of People</span>
         <div style="display:flex; align-items:center; gap:16px;">
-          <div class="counter-btn" onclick="updateGuests(-1)">−</div>
-          <div class="counter-num" id="guest-count">1</div>
-          <div class="counter-btn" onclick="updateGuests(1)">+</div>
+          <div class="counter-btn" onclick="updateGuests(-1)">−</div><div class="counter-num" id="guest-count">1</div><div class="counter-btn" onclick="updateGuests(1)">+</div>
         </div>
       </div>
     </div>
@@ -517,39 +380,34 @@ body.light-mode .modal-warning-text { color: #555; }
 
 <!-- MODALS -->
 <div class="modal-overlay" id="modal-calendar">
-  <div class="modal-box">
-    <div class="cal-header">May 2025</div>
-    <div class="cal-grid" id="cal-grid"></div>
-    <div class="modal-actions">
-      <div class="modal-btn cancel" onclick="closeModal('modal-calendar')">Cancel</div>
-      <div class="modal-btn apply" onclick="applyDate()">Apply</div>
-    </div>
+  <div class="modal-box"><div class="cal-header">May 2025</div><div class="cal-grid" id="cal-grid"></div>
+    <div class="modal-actions"><div class="modal-btn cancel" onclick="closeModal('modal-calendar')">Cancel</div><div class="modal-btn apply" onclick="applyDate()">Apply</div></div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-time">
-  <div class="modal-box">
-    <div class="cal-header">Select Time</div>
-    <div class="time-list" id="time-list"></div>
-    <div class="modal-actions">
-      <div class="modal-btn cancel" onclick="closeModal('modal-time')">Cancel</div>
-      <div class="modal-btn apply" onclick="applyTime()">Apply</div>
-    </div>
+  <div class="modal-box"><div class="cal-header">Select Time</div><div class="time-list" id="time-list"></div>
+    <div class="modal-actions"><div class="modal-btn cancel" onclick="closeModal('modal-time')">Cancel</div><div class="modal-btn apply" onclick="applyTime()">Apply</div></div>
   </div>
 </div>
 
-<!-- WARNING MODAL -->
+<!-- WARNING MODAL (Payment) -->
 <div class="modal-overlay" id="modal-warning">
   <div class="modal-box">
     <div class="modal-warning-icon">⚠️</div>
     <div class="cal-header">Important Reminder</div>
-    <div class="modal-warning-text">
-      Grace period is <strong>15 minutes</strong> after reservation was made. If you don't show up after the grace period, your reservation will be cancelled and your deposit will be forfeited.
-    </div>
-    <div class="modal-actions">
-      <div class="modal-btn cancel" onclick="closeModal('modal-warning')">Cancel</div>
-      <div class="modal-btn apply" onclick="finalizeBooking()">Agree & Pay</div>
-    </div>
+    <div class="modal-warning-text">Grace period is <strong>15 minutes</strong> after reservation was made. If you don't show up after the grace period, your reservation will be cancelled and your deposit will be forfeited.</div>
+    <div class="modal-actions"><div class="modal-btn cancel" onclick="closeModal('modal-warning')">Cancel</div><div class="modal-btn apply" onclick="finalizeBooking()">Agree & Pay</div></div>
+  </div>
+</div>
+
+<!-- CANCEL MODAL -->
+<div class="modal-overlay" id="modal-cancel">
+  <div class="modal-box">
+    <div class="modal-warning-icon">🗑️</div>
+    <div class="cal-header">Cancel Booking</div>
+    <div class="modal-warning-text">Are you sure to cancel this booking?</div>
+    <div class="modal-actions"><div class="modal-btn cancel" onclick="closeModal('modal-cancel')">No, Keep It</div><div class="modal-btn apply" style="background:#c8450a;" onclick="confirmCancel()">Yes, Cancel</div></div>
   </div>
 </div>
 
@@ -575,6 +433,7 @@ body.light-mode .modal-warning-text { color: #555; }
   let guestCount = 1;
   const bookings = [];
   const favorites = [];
+  let bookingToCancel = null; // Store ID for cancellation
 
   // ───── NAVIGATION ─────
   function showScreen(id) {
@@ -596,360 +455,143 @@ body.light-mode .modal-warning-text { color: #555; }
   }
 
   // ───── RENDERING ─────
-  function renderHome() {
-    renderHorizontal();
-    renderVertical(cafes);
-  }
-
-  function createImageHTML(imgSrc) {
-      if(imgSrc) return `<img src="${imgSrc}" alt="Cafe" onerror="this.style.display='none'">`;
-      return '';
-  }
-
-  // Helper to get crowd class based on seat count
-  function getCrowdClass(seats) {
-    if (seats <= 3) return 'crowd-red';
-    if (seats <= 8) return 'crowd-yellow';
-    return 'crowd-green';
-  }
+  function renderHome() { renderHorizontal(); renderVertical(cafes); }
+  function createImageHTML(imgSrc) { if(imgSrc) return `<img src="${imgSrc}" alt="Cafe" onerror="this.style.display='none'">`; return ''; }
+  function getCrowdClass(seats) { if (seats <= 3) return 'crowd-red'; if (seats <= 8) return 'crowd-yellow'; return 'crowd-green'; }
 
   function renderHorizontal() {
-    const hScroll = document.getElementById('home-horizontal-scroll');
-    hScroll.innerHTML = '';
+    const hScroll = document.getElementById('home-horizontal-scroll'); hScroll.innerHTML = '';
     cafes.slice(0, 5).forEach(c => {
-      const seats = Math.floor(Math.random() * 20) + 1; // Random seat count
-      const crowdClass = getCrowdClass(seats); // Determine color based on seats
-      
+      const seats = Math.floor(Math.random() * 20) + 1;
       hScroll.innerHTML += `
         <div class="cafe-card" onclick="loadDetail(${c.id})">
-          <div class="card-img">
-            ${createImageHTML(c.img)}
-            <div class="card-badge">
-               <span class="crowd-indicator ${crowdClass}"></span>
-               <span>${seats} Seats</span>
-            </div>
-          </div>
-          <div class="card-info">
-            <div class="card-name">${c.name}</div>
-            <div class="card-loc">📍 ${c.dist}</div>
-            <div class="card-meta">
-              <span class="available">● Available</span>
-              <span>★ ${c.rating}</span>
-            </div>
-          </div>
-        </div>
-      `;
+          <div class="card-img">${createImageHTML(c.img)}<div class="card-badge"><span class="crowd-indicator ${getCrowdClass(seats)}"></span><span>${seats} Seats</span></div></div>
+          <div class="card-info"><div class="card-name">${c.name}</div><div class="card-loc">📍 ${c.dist}</div><div class="card-meta"><span class="available">● Available</span><span>★ ${c.rating}</span></div></div>
+        </div>`;
     });
   }
 
   function renderVertical(data) {
-    const vList = document.getElementById('home-nearby-list');
-    vList.innerHTML = '';
-    if(data.length === 0) {
-        vList.innerHTML = '<div style="text-align:center; padding:40px; color:#666;">No cafes found.</div>';
-        return;
-    }
+    const vList = document.getElementById('home-nearby-list'); vList.innerHTML = '';
+    if(data.length === 0) { vList.innerHTML = '<div style="text-align:center; padding:40px; color:#666;">No cafes found.</div>'; return; }
     data.forEach(c => {
-      vList.innerHTML += `
-        <div class="list-item" onclick="loadDetail(${c.id})">
-          <div class="list-thumb">${createImageHTML(c.img)}</div>
-          <div class="list-info">
-            <div class="list-name">${c.name}</div>
-            <div class="list-desc">${c.desc}</div>
-            <div class="list-dist">📍 ${c.dist} · ★ ${c.rating}</div>
-          </div>
-        </div>
-      `;
+      vList.innerHTML += `<div class="list-item" onclick="loadDetail(${c.id})"><div class="list-thumb">${createImageHTML(c.img)}</div><div class="list-info"><div class="list-name">${c.name}</div><div class="list-desc">${c.desc}</div><div class="list-dist">📍 ${c.dist} · ★ ${c.rating}</div></div></div>`;
     });
   }
 
   function renderFavorites() {
-    const list = document.getElementById('favorites-list');
-    list.innerHTML = '';
+    const list = document.getElementById('favorites-list'); list.innerHTML = '';
     const favCafes = cafes.filter(c => favorites.includes(c.id));
-
-    if(favCafes.length === 0) {
-      list.innerHTML = '<div style="text-align:center; padding:40px; color:#666;">No saved cafes yet.</div>';
-      return;
-    }
-
+    if(favCafes.length === 0) { list.innerHTML = '<div style="text-align:center; padding:40px; color:#666;">No saved cafes yet.</div>'; return; }
     favCafes.forEach(c => {
-      list.innerHTML += `
-        <div class="list-item" onclick="loadDetail(${c.id})">
-          <div class="list-thumb">${createImageHTML(c.img)}</div>
-          <div class="list-info">
-            <div class="list-name">${c.name}</div>
-            <div class="list-desc">${c.desc}</div>
-            <div class="list-dist">📍 ${c.dist}</div>
-          </div>
-        </div>
-      `;
+      list.innerHTML += `<div class="list-item" onclick="loadDetail(${c.id})"><div class="list-thumb">${createImageHTML(c.img)}</div><div class="list-info"><div class="list-name">${c.name}</div><div class="list-desc">${c.desc}</div><div class="list-dist">📍 ${c.dist}</div></div></div>`;
     });
   }
 
   function handleHomeSearch(query) {
-    document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
-    document.querySelector('.filter-chips .chip').classList.add('active');
-    
+    document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active')); document.querySelector('.filter-chips .chip').classList.add('active');
     const q = query.toLowerCase();
-    if(q.length === 0) {
-        renderVertical(cafes);
-        document.getElementById('home-horizontal-scroll').style.display = 'flex';
-        document.getElementById('header-horizontal').style.display = 'flex';
-        document.getElementById('header-list').style.display = 'flex';
-        document.getElementById('home-list-title').innerText = "Popular Near Campus";
-        return;
-    }
-    
-    const results = cafes.filter(c => 
-      c.name.toLowerCase().includes(q) || 
-      c.desc.toLowerCase().includes(q) ||
-      c.tags.some(t => t.toLowerCase().includes(q))
-    );
-
-    document.getElementById('home-horizontal-scroll').style.display = 'none';
-    document.getElementById('header-horizontal').style.display = 'none';
-    document.getElementById('home-list-title').innerText = "Search Results";
+    if(q.length === 0) { renderVertical(cafes); document.getElementById('home-horizontal-scroll').style.display = 'flex'; document.getElementById('header-horizontal').style.display = 'flex'; document.getElementById('header-list').style.display = 'flex'; document.getElementById('home-list-title').innerText = "Popular Near Campus"; return; }
+    const results = cafes.filter(c => c.name.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q) || c.tags.some(t => t.toLowerCase().includes(q)));
+    document.getElementById('home-horizontal-scroll').style.display = 'none'; document.getElementById('header-horizontal').style.display = 'none'; document.getElementById('home-list-title').innerText = "Search Results";
     renderVertical(results);
   }
 
   function filterHome(type, btn) {
     document.getElementById('home-search-input').value = '';
-    document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-
-    const hScroll = document.getElementById('home-horizontal-scroll');
-    const hHeader = document.getElementById('header-horizontal');
-    const listTitle = document.getElementById('home-list-title');
-
-    if(type === 'all') {
-        hScroll.style.display = 'flex';
-        hHeader.style.display = 'flex';
-        listTitle.innerText = "Popular Near Campus";
-        renderVertical(cafes);
-    } else {
-        hScroll.style.display = 'none';
-        hHeader.style.display = 'none';
-        if(type === 'coworking') listTitle.innerText = "Coworking Spaces";
-        else if(type === 'date') listTitle.innerText = "Date Spots";
-        else if(type === 'hangout') listTitle.innerText = "Hangout Spots";
-        else listTitle.innerText = "Results";
-        const filtered = cafes.filter(c => c.tags.some(t => t.toLowerCase().includes(type)));
-        renderVertical(filtered);
-    }
+    document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active')); btn.classList.add('active');
+    const hScroll = document.getElementById('home-horizontal-scroll'); const hHeader = document.getElementById('header-horizontal'); const listTitle = document.getElementById('home-list-title');
+    if(type === 'all') { hScroll.style.display = 'flex'; hHeader.style.display = 'flex'; listTitle.innerText = "Popular Near Campus"; renderVertical(cafes); }
+    else { hScroll.style.display = 'none'; hHeader.style.display = 'none'; if(type === 'coworking') listTitle.innerText = "Coworking Spaces"; else if(type === 'date') listTitle.innerText = "Date Spots"; else if(type === 'hangout') listTitle.innerText = "Hangout Spots"; else listTitle.innerText = "Results"; const filtered = cafes.filter(c => c.tags.some(t => t.toLowerCase().includes(type))); renderVertical(filtered); }
   }
 
   // ───── DETAIL LOGIC ─────
   function loadDetail(id) {
-    currentCafe = cafes.find(c => c.id === id);
-    if(!currentCafe) return;
-
+    currentCafe = cafes.find(c => c.id === id); if(!currentCafe) return;
     document.getElementById('detail-name').innerText = currentCafe.name;
     document.getElementById('detail-desc').innerText = currentCafe.desc;
     document.getElementById('detail-stars').innerText = '★'.repeat(Math.round(currentCafe.rating)) + ' ' + currentCafe.rating;
     document.getElementById('detail-reviews').innerText = `(${currentCafe.reviews} reviews)`;
     document.getElementById('detail-map-link').href = currentCafe.mapsUrl;
+    const heroImg = document.getElementById('detail-hero-img'); if(currentCafe.img) { heroImg.src = currentCafe.img; heroImg.style.display = 'block'; } else { heroImg.style.display = 'none'; }
+    const tagBox = document.getElementById('detail-tags'); tagBox.innerHTML = ''; currentCafe.tags.forEach(t => tagBox.innerHTML += `<div class="tag">${t}</div>`);
+    const revBox = document.getElementById('detail-reviews-list'); revBox.innerHTML = ''; currentCafe.reviewsList.forEach(r => { revBox.innerHTML += `<div class="review-card"><div class="review-header"><span style="font-weight:600;">User</span><span style="color:#b8924a;">★ ${currentCafe.rating}</span></div><div class="review-text">"${r}"</div></div>`; });
+    const favBtn = document.getElementById('fav-btn'); favBtn.innerText = favorites.includes(currentCafe.id) ? '♥️' : '♡';
     
-    const heroImg = document.getElementById('detail-hero-img');
-    if(currentCafe.img) { heroImg.src = currentCafe.img; heroImg.style.display = 'block'; } 
-    else { heroImg.style.display = 'none'; }
-
-    const tagBox = document.getElementById('detail-tags');
-    tagBox.innerHTML = '';
-    currentCafe.tags.forEach(t => tagBox.innerHTML += `<div class="tag">${t}</div>`);
-
-    const revBox = document.getElementById('detail-reviews-list');
-    revBox.innerHTML = '';
-    currentCafe.reviewsList.forEach(r => {
-      revBox.innerHTML += `<div class="review-card"><div class="review-header"><span style="font-weight:600;">User</span><span style="color:#b8924a;">★ ${currentCafe.rating}</span></div><div class="review-text">"${r}"</div></div>`;
-    });
-
-    const favBtn = document.getElementById('fav-btn');
-    favBtn.innerText = favorites.includes(currentCafe.id) ? '♥️' : '♡';
-
-    const seatBox = document.getElementById('detail-seats');
-    seatBox.innerHTML = '';
-    selectedSeat = null;
+    const seatBox = document.getElementById('detail-seats'); seatBox.innerHTML = ''; selectedSeat = null;
     for(let i=0; i<12; i++) {
-      const seatName = `${String.fromCharCode(65 + Math.floor(i/4))}${(i%4)+1}`;
-      const isFree = Math.random() > 0.4;
-      const isSelected = isFree && selectedSeat === null;
-      if(isSelected) selectedSeat = seatName;
+      const seatName = `${String.fromCharCode(65 + Math.floor(i/4))}${(i%4)+1}`; const isFree = Math.random() > 0.4; const isSelected = isFree && selectedSeat === null; if(isSelected) selectedSeat = seatName;
       seatBox.innerHTML += `<div class="seat ${isFree ? 'free' : 'taken'} ${isSelected ? 'selected' : ''}" onclick="selectSeat(this)">${seatName}</div>`;
     }
-
-    const timeBox = document.getElementById('detail-time-slots');
-    timeBox.innerHTML = '';
-    selectedTime = null; 
-    for(let h=8; h<=22; h++) {
-      const isBusy = Math.random() > 0.7;
-      const isFirstAvailable = !isBusy && selectedTime === null;
-      if(isFirstAvailable) selectedTime = `${h}:00`;
-      timeBox.innerHTML += `<div class="time-slot ${isBusy ? 'taken' : ''} ${isFirstAvailable ? 'active' : ''}" onclick="selectTime(this)">${h}:00</div>`;
-    }
-
+    
+    const timeBox = document.getElementById('detail-time-slots'); timeBox.innerHTML = ''; selectedTime = null;
+    for(let h=8; h<=22; h++) { const isBusy = Math.random() > 0.7; const isFirstAvailable = !isBusy && selectedTime === null; if(isFirstAvailable) selectedTime = `${h}:00`; timeBox.innerHTML += `<div class="time-slot ${isBusy ? 'taken' : ''} ${isFirstAvailable ? 'active' : ''}" onclick="selectTime(this)">${h}:00</div>`; }
     showScreen('screen-detail');
   }
 
-  function selectSeat(el) {
-    if(el.classList.contains('taken')) return;
-    document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedSeat = el.innerText;
-    document.getElementById('booking-seat-id').innerText = selectedSeat;
-  }
-
-  function selectTime(el) {
-    if(el.classList.contains('taken')) return;
-    document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    selectedTime = el.innerText;
-  }
-
-  function toggleFav() {
-    if(!currentCafe) return;
-    const index = favorites.indexOf(currentCafe.id);
-    const btn = document.getElementById('fav-btn');
-    if (index > -1) { favorites.splice(index, 1); btn.innerText = '♡'; }
-    else { favorites.push(currentCafe.id); btn.innerText = '♥️'; }
-  }
+  function selectSeat(el) { if(el.classList.contains('taken')) return; document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected')); el.classList.add('selected'); selectedSeat = el.innerText; document.getElementById('booking-seat-id').innerText = selectedSeat; }
+  function selectTime(el) { if(el.classList.contains('taken')) return; document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('active')); el.classList.add('active'); selectedTime = el.innerText; }
+  function toggleFav() { if(!currentCafe) return; const index = favorites.indexOf(currentCafe.id); const btn = document.getElementById('fav-btn'); if (index > -1) { favorites.splice(index, 1); btn.innerText = '♡'; } else { favorites.push(currentCafe.id); btn.innerText = '♥️'; } }
 
   // ───── BOOKING LOGIC ─────
-  function openModal(id) {
-    document.getElementById(id).style.display = 'flex';
-    if(id === 'modal-calendar') renderCalendar();
-    if(id === 'modal-time') renderTimeList();
-  }
-  
+  function openModal(id) { document.getElementById(id).style.display = 'flex'; if(id === 'modal-calendar') renderCalendar(); if(id === 'modal-time') renderTimeList(); }
   function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
   function loadBooking() {
     if(!currentCafe) return;
     document.getElementById('booking-cafe-name').innerText = currentCafe.name;
-    if(!selectedSeat) selectedSeat = 'A1';
-    document.getElementById('booking-seat-id').innerText = selectedSeat;
-    selectedDate = null;
-    document.getElementById('booking-date').innerText = "Select Date";
-    if(selectedTime) {
-        const startHour = parseInt(selectedTime);
-        const endHour = startHour + 2;
-        document.getElementById('booking-time').innerText = `${selectedTime} - ${endHour}:00`;
-    } else { document.getElementById('booking-time').innerText = "Select Time"; }
-    guestCount = 1;
-    document.getElementById('guest-count').innerText = "1";
+    if(!selectedSeat) selectedSeat = 'A1'; document.getElementById('booking-seat-id').innerText = selectedSeat;
+    selectedDate = null; document.getElementById('booking-date').innerText = "Select Date";
+    if(selectedTime) { const startHour = parseInt(selectedTime); const endHour = startHour + 2; document.getElementById('booking-time').innerText = `${selectedTime} - ${endHour}:00`; } else { document.getElementById('booking-time').innerText = "Select Time"; }
+    guestCount = 1; document.getElementById('guest-count').innerText = "1";
     showScreen('screen-booking');
   }
 
   function renderBookings() {
-    const list = document.getElementById('bookings-list');
-    list.innerHTML = '';
-
-    if(bookings.length === 0) {
-      list.innerHTML = '<div style="text-align:center; padding:40px; color:#666;">No bookings yet.</div>';
-      return;
-    }
-
+    const list = document.getElementById('bookings-list'); list.innerHTML = '';
+    if(bookings.length === 0) { list.innerHTML = '<div style="text-align:center; padding:40px; color:#666;">No bookings yet.</div>'; return; }
     bookings.forEach(b => {
       list.innerHTML += `
         <div class="booking-item-container">
-          <div class="list-item" style="border-bottom:none; padding-bottom:0;">
-            <div class="list-info">
-              <div class="list-name">${b.cafeName}</div>
-              <div class="list-desc">${b.date} · ${b.time}</div>
-              <div class="list-dist">Seat ${b.seat} · ${b.guests} guest(s)</div>
-            </div>
-          </div>
-          <div class="booking-actions">
-            <div class="btn-cancel" onclick="cancelBooking(${b.id})">Cancel Reservation</div>
-          </div>
-        </div>
-      `;
+          <div class="list-item" style="border-bottom:none; padding-bottom:0;"><div class="list-info"><div class="list-name">${b.cafeName}</div><div class="list-desc">${b.date} · ${b.time}</div><div class="list-dist">Seat ${b.seat} · ${b.guests} guest(s)</div></div></div>
+          <div class="booking-actions"><div class="btn-cancel" onclick="cancelBooking(${b.id})">Cancel Reservation</div></div>
+        </div>`;
     });
   }
 
   function cancelBooking(id) {
-    const index = bookings.findIndex(b => b.id === id);
-    if(index > -1) {
-      bookings.splice(index, 1);
+    bookingToCancel = id;
+    openModal('modal-cancel');
+  }
+
+  function confirmCancel() {
+    if(bookingToCancel !== null) {
+      const index = bookings.findIndex(b => b.id === bookingToCancel);
+      if(index > -1) bookings.splice(index, 1);
+      bookingToCancel = null;
+      closeModal('modal-cancel');
       renderBookings();
     }
   }
 
-  function initiatePayment() {
-    if(!currentCafe || !selectedDate || !selectedTime) {
-      alert('Please select date and time.');
-      return;
-    }
-    openModal('modal-warning');
-  }
+  function initiatePayment() { if(!currentCafe || !selectedDate || !selectedTime) { alert('Please select date and time.'); return; } openModal('modal-warning'); }
 
   function finalizeBooking() {
-    bookings.unshift({
-      id: Date.now(),
-      cafeName: currentCafe.name,
-      date: document.getElementById('booking-date').innerText,
-      time: document.getElementById('booking-time').innerText,
-      seat: selectedSeat,
-      guests: guestCount
-    });
-    closeModal('modal-warning');
-    alert('Booking Confirmed!');
-    renderBookings();
-    showScreen('screen-bookings');
+    bookings.unshift({ id: Date.now(), cafeName: currentCafe.name, date: document.getElementById('booking-date').innerText, time: document.getElementById('booking-time').innerText, seat: selectedSeat, guests: guestCount });
+    closeModal('modal-warning'); alert('Booking Confirmed!'); renderBookings(); showScreen('screen-bookings');
   }
 
-  function updateGuests(delta) {
-    guestCount += delta;
-    if(guestCount < 1) guestCount = 1;
-    if(guestCount > 10) guestCount = 10;
-    document.getElementById('guest-count').innerText = guestCount;
-  }
+  function updateGuests(delta) { guestCount += delta; if(guestCount < 1) guestCount = 1; if(guestCount > 10) guestCount = 10; document.getElementById('guest-count').innerText = guestCount; }
 
   // ───── CALENDAR & TIME MODALS ─────
-  function renderCalendar() {
-    const grid = document.getElementById('cal-grid');
-    grid.innerHTML = '';
-    const days = ['S','M','T','W','T','F','S'];
-    days.forEach(d => grid.innerHTML += `<div class="cal-day-name">${d}</div>`);
-    for(let i=0; i<4; i++) grid.innerHTML += `<div class="cal-day disabled"></div>`;
-    for(let i=1; i<=31; i++) {
-      grid.innerHTML += `<div class="cal-day ${selectedDate === i ? 'selected' : ''}" onclick="pickDate(${i})">${i}</div>`;
-    }
-  }
+  function renderCalendar() { const grid = document.getElementById('cal-grid'); grid.innerHTML = ''; const days = ['S','M','T','W','T','F','S']; days.forEach(d => grid.innerHTML += `<div class="cal-day-name">${d}</div>`); for(let i=0; i<4; i++) grid.innerHTML += `<div class="cal-day disabled"></div>`; for(let i=1; i<=31; i++) { grid.innerHTML += `<div class="cal-day ${selectedDate === i ? 'selected' : ''}" onclick="pickDate(${i})">${i}</div>`; } }
   function pickDate(d) { selectedDate = d; renderCalendar(); }
-  function applyDate() {
-    if(selectedDate) {
-      const d = new Date(2025, 4, selectedDate);
-      document.getElementById('booking-date').innerText = d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
-    }
-    closeModal('modal-calendar');
-  }
+  function applyDate() { if(selectedDate) { const d = new Date(2025, 4, selectedDate); document.getElementById('booking-date').innerText = d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }); } closeModal('modal-calendar'); }
+  function renderTimeList() { const list = document.getElementById('time-list'); list.innerHTML = ''; for(let h=8; h<=22; h++) { const val = `${h}:00`; list.innerHTML += `<div class="time-item ${selectedTime === val ? 'selected' : ''}" onclick="pickTime('${val}', event)">${val}</div>`; } }
+  function pickTime(t, event) { selectedTime = t; document.querySelectorAll('.time-item').forEach(i => i.classList.remove('selected')); event.currentTarget.classList.add('selected'); }
+  function applyTime() { if(selectedTime) { const h = parseInt(selectedTime); document.getElementById('booking-time').innerText = `${selectedTime} - ${h+2}:00`; } closeModal('modal-time'); }
 
-  function renderTimeList() {
-    const list = document.getElementById('time-list');
-    list.innerHTML = '';
-    for(let h=8; h<=22; h++) {
-      const val = `${h}:00`;
-      list.innerHTML += `<div class="time-item ${selectedTime === val ? 'selected' : ''}" onclick="pickTime('${val}', event)">${val}</div>`;
-    }
-  }
-  function pickTime(t, event) {
-    selectedTime = t;
-    document.querySelectorAll('.time-item').forEach(i => i.classList.remove('selected'));
-    event.currentTarget.classList.add('selected');
-  }
-  function applyTime() {
-    if(selectedTime) {
-      const h = parseInt(selectedTime);
-      document.getElementById('booking-time').innerText = `${selectedTime} - ${h+2}:00`;
-    }
-    closeModal('modal-time');
-  }
-
-  function setTheme(theme) {
-    if(theme === 'light') document.body.classList.add('light-mode');
-    else document.body.classList.remove('light-mode');
-  }
+  function setTheme(theme) { if(theme === 'light') document.body.classList.add('light-mode'); else document.body.classList.remove('light-mode'); }
 
   // Init
   renderHome();
